@@ -1,69 +1,46 @@
-/**
- * 事件总线 - 用于组件间通信
- * 特别适用于不相关组件之间的通信，如缓存刷新事件
- */
+// 此文件已被 Zustand 状态管理替代，保留此文件仅作为历史记录
+// 请使用 src/store/cacheStore.ts 中的 useCacheStore 替代
 
-// 定义事件回调函数类型
-type EventCallback = (data?: any) => void;
+// 如需使用事件总线功能，请参考以下代码：
+/*
+import { create } from 'zustand';
 
-// 事件映射类型
-interface EventMap {
-  [eventName: string]: EventCallback[];
+interface EventBusState {
+  events: Record<string, Array<(data: unknown) => void>>;
+  on: <T>(event: string, callback: (data: T) => void) => void;
+  off: <T>(event: string, callback: (data: T) => void) => void;
+  emit: <T>(event: string, data: T) => void;
 }
 
-class EventBus {
-  private events: EventMap = {};
-
-  /**
-   * 订阅事件
-   * @param eventName 事件名称
-   * @param callback 回调函数
-   */
-  subscribe(eventName: string, callback: EventCallback): void {
-    if (!this.events[eventName]) {
-      this.events[eventName] = [];
-    }
-    this.events[eventName].push(callback);
-  }
-
-  /**
-   * 取消订阅事件
-   * @param eventName 事件名称
-   * @param callback 回调函数
-   */
-  unsubscribe(eventName: string, callback: EventCallback): void {
-    if (!this.events[eventName]) return;
-    
-    this.events[eventName] = this.events[eventName].filter(
-      (cb) => cb !== callback
-    );
-  }
-
-  /**
-   * 发布事件
-   * @param eventName 事件名称
-   * @param data 事件数据
-   */
-  emit(eventName: string, data?: any): void {
-    if (!this.events[eventName]) return;
-    
-    this.events[eventName].forEach((callback) => {
-      callback(data);
+const useEventBusStore = create<EventBusState>((set, get) => ({
+  events: {},
+  
+  on: <T>(event: string, callback: (data: T) => void) => {
+    set((state) => {
+      const events = { ...state.events };
+      if (!events[event]) {
+        events[event] = [];
+      }
+      events[event].push(callback as (data: unknown) => void);
+      return { events };
     });
-  }
+  },
+  
+  off: <T>(event: string, callback: (data: T) => void) => {
+    set((state) => {
+      const events = { ...state.events };
+      if (!events[event]) return { events };
+      events[event] = events[event].filter((cb) => cb !== callback);
+      return { events };
+    });
+  },
+  
+  emit: <T>(event: string, data: T) => {
+    const { events } = get();
+    if (!events[event]) return;
+    events[event].forEach((callback) => callback(data));
+  },
+}));
 
-  /**
-   * 清除所有事件监听
-   */
-  clear(): void {
-    this.events = {};
-  }
-}
-
-// 导出单例实例
-export const eventBus = new EventBus();
-
-// 定义常用事件名称常量
-export const EVENT_NAMES = {
-  CACHE_CLEARED: 'cache-cleared',
-};
+export default useEventBusStore;
+*/
