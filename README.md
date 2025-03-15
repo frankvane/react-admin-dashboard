@@ -70,7 +70,8 @@ const useCacheStore = create<CacheStore>((set) => ({
 
 3. 图表组件配置更新
    - 柱状图: 将 `position: "middle"` 更改为 `position: "top"`
-   - 饼图: 将 `type: "inner"` 更改为 `type: "outer"`
+   - 饼图: 将 `type: "outer"` 更改为 `type: "spider"`
+     - 注意: Ant Design Charts 5.x 中不再支持 `type: "outer"` 或 `type: "inner"`，应使用 `"spider"` 类型
 
 ## 开发
 
@@ -126,8 +127,9 @@ npm run preview
 ## 更新日志
 
 ### 2025-03-15
+- 修复饼图标签配置，将 `type: "outer"` 更改为 `type: "spider"`，解决 "Unknown Component: shape.outer" 错误
 - 修复 Card 组件的 bordered 属性，替换为 variant="borderless"
-- 修复图表组件配置，解决 "Unknown position: middle" 和 "Unknown Component: shape.inner" 错误
+- 修复图表组件配置，解决 "Unknown position: middle" 错误
 - 添加 DashboardStatistics 类型定义，优化类型安全
 
 ### 2025-03-14
