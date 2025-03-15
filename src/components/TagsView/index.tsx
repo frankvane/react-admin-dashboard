@@ -1,5 +1,5 @@
 import { Button, Dropdown, Menu, Space, Tabs, Tooltip } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { DownOutlined } from "@ant-design/icons";
@@ -17,7 +17,8 @@ const TagsView: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeKey, setActiveKey] = useState<string>(location.pathname);
-  const [items, setItems] = useState<TagItem[]>([
+  // 使用 useRef 来存储 items，避免依赖循环
+  const itemsRef = useRef<TagItem[]>([
     {
       key: "/",
       label: "Dashboard",
@@ -25,6 +26,7 @@ const TagsView: React.FC = () => {
       closable: false,
     },
   ]);
+  const [items, setItems] = useState<TagItem[]>(itemsRef.current);
 
   // 根据路由变化更新标签
   useEffect(() => {
@@ -32,25 +34,27 @@ const TagsView: React.FC = () => {
     setActiveKey(pathname);
 
     // 检查标签是否已存在
-    const isExist = items.some((item) => item.path === pathname);
+    const isExist = itemsRef.current.some((item) => item.path === pathname);
     if (!isExist) {
       // 根据路径获取路由元数据
       const meta = getRouteMetaByPath(pathname);
 
       // 如果找到元数据并且不是隐藏的路由，则添加标签
       if (meta && !meta.hidden) {
-        setItems((prevItems) => [
-          ...prevItems,
+        const newItems = [
+          ...itemsRef.current,
           {
             key: pathname,
             label: meta.title,
             path: pathname,
             closable: pathname !== "/",
           },
-        ]);
+        ];
+        itemsRef.current = newItems;
+        setItems(newItems);
       }
     }
-  }, [location, items]);
+  }, [location]);
 
   // 切换标签
   const onChange = (key: string) => {
@@ -65,7 +69,10 @@ const TagsView: React.FC = () => {
   ) => {
     if (action === "remove") {
       const targetPath = targetKey as string;
-      const newItems = items.filter((item) => item.path !== targetPath);
+      const newItems = itemsRef.current.filter(
+        (item) => item.path !== targetPath
+      );
+      itemsRef.current = newItems;
       setItems(newItems);
 
       // 如果关闭的是当前活动标签，则跳转到最后一个标签
@@ -85,19 +92,21 @@ const TagsView: React.FC = () => {
 
   // 关闭其他标签
   const closeOthers = useCallback(() => {
-    const newItems = items.filter(
+    const newItems = itemsRef.current.filter(
       (item) => item.path === "/" || item.path === activeKey
     );
+    itemsRef.current = newItems;
     setItems(newItems);
-  }, [activeKey, items]);
+  }, [activeKey]);
 
   // 关闭所有标签
   const closeAll = useCallback(() => {
-    const newItems = items.filter((item) => item.path === "/");
+    const newItems = itemsRef.current.filter((item) => item.path === "/");
+    itemsRef.current = newItems;
     setItems(newItems);
     setActiveKey("/");
     navigate("/");
-  }, [items, navigate]);
+  }, [navigate]);
 
   // 右键菜单
   const menu = (
@@ -105,18 +114,18 @@ const TagsView: React.FC = () => {
       items={[
         {
           key: "close-current",
-          label: "Close Current",
+          label: "关闭当前标签",
           onClick: closeCurrent,
           disabled: activeKey === "/",
         },
         {
           key: "close-others",
-          label: "Close Others",
+          label: "关闭其他标签",
           onClick: closeOthers,
         },
         {
           key: "close-all",
-          label: "Close All",
+          label: "关闭所有标签",
           onClick: closeAll,
         },
       ]}
