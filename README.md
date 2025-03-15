@@ -130,16 +130,38 @@ npm run preview
 - 修复 Card 组件的 bordered 属性，替换为 variant="borderless"
 - 修复图表组件配置，解决 "Unknown position: middle" 错误
 - 添加 DashboardStatistics 类型定义，优化类型安全
+- 修复 TypeScript 类型错误，为柱状图配置添加正确的类型定义
 
 ### 2025-03-14
 - 重构页面缓存实现，使用 Zustand 替代 eventBus
 - 优化 Documentation 组件，支持缓存刷新
 - 修复 Dropdown 组件的 overlay 属性废弃问题
+- 添加全局搜索功能，支持快捷键唤起
+- 优化暗色主题下的组件样式
+- 添加国际化支持，支持中英文切换
 
 ### 2025-03-13
 - 集成 KeepAlive 组件实现页面缓存
 - 添加路由缓存配置
 - 添加刷新按钮实现页面缓存刷新
+- 优化路由配置，支持动态路由
+- 添加权限控制功能，基于角色的访问控制
+- 集成 TagsView 组件，支持页面快速切换
+
+### 2025-03-12
+- 项目初始化，基于 React 18 和 TypeScript
+- 集成 Ant Design 5.x 组件库
+- 添加基础布局组件
+- 实现主题切换功能
+- 集成 @ant-design/plots 图表库
+- 添加响应式设计，支持移动端访问
+
+### 2025-03-11
+- 需求分析与技术选型
+- 项目架构设计
+- 创建项目仓库
+- 配置开发环境
+- 编写项目文档
 
 ## 许可证
 
