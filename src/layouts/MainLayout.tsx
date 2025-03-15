@@ -5,6 +5,7 @@ import HeaderComponent from "./components/Header";
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import SidebarComponent from "./components/Sidebar";
+import { TagsView } from "../components";
 
 const { Content } = Layout;
 
@@ -22,6 +23,7 @@ const MainLayout: React.FC = () => {
         }}
       >
         <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />
+        <TagsView />
         <Content
           style={{
             margin: "16px 16px 0",
