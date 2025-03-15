@@ -1,4 +1,4 @@
-import { Area, Column, Line, Pie } from "@ant-design/plots";
+import { Area, Column, Line } from "@ant-design/plots";
 import {
   AreaChartOutlined,
   ArrowDownOutlined,
@@ -112,15 +112,31 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
-  // 饼图配置 - 完全重构
-  const pieConfig = {
+  // 销售比例柱状图配置 (替代饼图)
+  const salesColumnConfig = {
     data: salesProportionData,
-    angleField: 'value',
-    colorField: 'type',
-    radius: 0.8,
-    legend: false,
-    // 移除标签配置，使用默认标签
-    interactions: [{ type: 'element-active' }],
+    xField: 'type',
+    yField: 'value',
+    color: ({ type }) => {
+      const colorMap = {
+        appliances: '#1890ff',
+        drinks: '#52c41a',
+        health: '#faad14',
+        clothing: '#f5222d',
+        baby: '#eb2f96',
+        default: '#722ed1'
+      };
+      return colorMap[type] || colorMap.default;
+    },
+    label: {
+      position: 'top',
+      content: (data) => `${data.value}`,
+    },
+    xAxis: {
+      label: {
+        autoRotate: true,
+      },
+    },
   };
 
   // 折线图配置
@@ -319,7 +335,7 @@ const Dashboard: React.FC = () => {
         </Col>
       </Row>
 
-      {/* 销售比例 */}
+      {/* 销售比例 - 使用柱状图替代饼图 */}
       <Card
         title="销售比例"
         style={{ marginTop: 16, borderRadius: 4 }}
@@ -337,7 +353,7 @@ const Dashboard: React.FC = () => {
       >
         <Row gutter={16}>
           <Col span={12}>
-            <Pie {...pieConfig} height={300} />
+            <Column {...salesColumnConfig} height={300} />
           </Col>
           <Col span={12}>
             <List
