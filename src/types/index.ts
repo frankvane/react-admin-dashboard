@@ -1,33 +1,39 @@
-// 用户类型
+import { ReactNode } from "react";
+
 export interface User {
-  id: string;
+  id: number;
   username: string;
-  avatar?: string;
-  email?: string;
+  name: string;
+  avatar: string;
+  email: string;
   role: string;
+  permissions: string[];
 }
 
-// 菜单项类型
 export interface MenuItem {
   key: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   label: string;
-  children?: MenuItem[];
   path?: string;
+  children?: MenuItem[];
 }
 
-// 路由类型
 export interface AppRoute {
   path: string;
-  element: React.ReactNode;
+  element: ReactNode;
   children?: AppRoute[];
+  meta?: {
+    title?: string;
+    icon?: ReactNode;
+    hidden?: boolean;
+    keepAlive?: boolean;
+  };
 }
 
-// 统计数据类型
 export interface StatisticData {
   title: string;
-  value: number;
-  icon?: React.ReactNode;
+  value: number | string;
+  icon?: ReactNode;
   color?: string;
   footer?: string;
   trend?: {
@@ -37,24 +43,30 @@ export interface StatisticData {
   };
 }
 
-// 图表数据类型
 export interface ChartDataItem {
   month: string;
-  value?: number;
-  [key: string]: string | number | undefined;
+  [key: string]: string | number;
 }
 
-// 销售比例数据类型
 export interface SalesProportionItem {
   type: string;
   value: number;
   percentage: number;
 }
 
-// API 响应类型
-export interface ApiResponse<T> {
-  code: number;
-  data: T;
-  message: string;
+export interface DashboardStatistics {
+  sales: number;
+  dailySales: number;
+  visits: number;
+  dailyVisits: number;
+  payments: number;
+  conversionRate: number;
+  operations: number;
+}
+
+export interface ApiResponse<T = any> {
   success: boolean;
+  data: T;
+  message?: string;
+  code?: number;
 }
