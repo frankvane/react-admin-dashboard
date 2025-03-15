@@ -54,10 +54,10 @@ src/
 ├── router/        # 路由配置
 ├── services/      # API 服务
 ├── store/         # 状态管理
+│   └── cacheStore.ts # 缓存状态管理
 ├── styles/        # 全局样式
 ├── types/         # TypeScript 类型定义
 ├── utils/         # 工具函数
-│   └── eventBus.ts # 事件总线
 ├── App.tsx        # 应用入口组件
 └── main.tsx       # 应用入口文件
 ```
@@ -68,9 +68,19 @@ src/
 
 ## 📋 更新日志
 
+### v0.1.1 (2025-03-15)
+
+- **最新** - refactor: 使用 Zustand 替代 eventBus 实现页面缓存
+
+  - 添加 cacheStore.ts 实现缓存状态管理
+  - 重构 KeepAlive 组件，使用 Zustand 管理缓存状态
+  - 重构 Header 组件，使用 Zustand 通知缓存刷新
+  - 重构 Documentation 组件，使用 Zustand 监听缓存变化
+  - 标记 eventBus.ts 为已弃用，保留代码作为参考
+
 ### v0.1.0 (2025-03-15)
 
-- **最新** - feat: 实现页面缓存功能
+- feat: 实现页面缓存功能
 
   - 添加自定义 KeepAlive 组件实现页面缓存
   - 在路由配置中通过 meta.cache 属性标记需要缓存的页面
@@ -147,7 +157,7 @@ src/
 
 - **KeepAlive 组件**：自定义组件，维护一个缓存列表，保存已访问过的页面组件。
 - **路由元数据**：通过路由配置的 `meta.cache` 属性决定页面是否需要缓存。
-- **事件总线**：使用自定义事件总线实现组件间通信，特别是在缓存被清除时通知相关组件。
+- **Zustand 状态管理**：使用 Zustand 实现组件间通信，特别是在缓存被清除时通知相关组件。
 - **全局状态**：使用模块级变量保持状态，确保即使组件重新挂载也能保持之前的状态。
 
 ### 演示页面
