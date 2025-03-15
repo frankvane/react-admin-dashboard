@@ -1,4 +1,4 @@
-import { Avatar, Button, Dropdown, Layout, Space, Typography } from "antd";
+import { Avatar, Button, Dropdown, Layout, Space, Typography, message } from "antd";
 import {
   BellOutlined,
   FullscreenOutlined,
@@ -7,14 +7,17 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  ReloadOutlined,
   SearchOutlined,
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
 import type { MenuProps } from "antd";
-import React from "react";
+import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { useTheme } from "../../hooks";
+import { KeepAliveContext } from "../../components/KeepAlive";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -29,6 +32,15 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   setCollapsed,
 }) => {
   const [theme, toggleTheme] = useTheme();
+  const location = useLocation();
+  const { refresh } = useContext(KeepAliveContext);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  // 刷新当前页面
+  const handleRefresh = () => {
+    refresh(location.pathname);
+    messageApi.success('页面已刷新');
+  };
 
   const userMenuItems: MenuProps["items"] = [
     {
@@ -66,6 +78,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         marginBottom: 16,
       }}
     >
+      {contextHolder}
       <div
         style={{
           display: "flex",
@@ -98,6 +111,13 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           </div>
         </div>
         <Space size={16}>
+          {/* 添加刷新按钮 */}
+          <Button
+            type="text"
+            icon={<ReloadOutlined />}
+            onClick={handleRefresh}
+            title="刷新当前页面"
+          />
           <Button
             type="text"
             icon={<GlobalOutlined />}
