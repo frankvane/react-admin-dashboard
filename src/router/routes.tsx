@@ -1,102 +1,149 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
 import {
   AppstoreOutlined,
-  BarChartOutlined,
+  AreaChartOutlined,
+  BookOutlined,
   DashboardOutlined,
   FileTextOutlined,
-  FormOutlined,
-  TableOutlined,
-} from '@ant-design/icons';
+  LockOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { AppRoute } from "../types";
+import Dashboard from "../pages/dashboard";
+import Documentation from "../pages/documentation";
+import NotFound from "../pages/404";
+import React from "react";
 
-import MainLayout from '../layouts/MainLayout';
-import Dashboard from '../pages/dashboard';
-import Documentation from '../pages/documentation';
-import NotFound from '../pages/404';
+// 用户管理页面
+const UserManagement = React.lazy(() => import("../pages/permission/user"));
+// 角色管理页面
+const RoleManagement = React.lazy(() => import("../pages/permission/role"));
+// 授权管理页面
+const AuthManagement = React.lazy(() => import("../pages/permission/auth"));
 
-// 路由配置接口
-export interface RouteConfig {
-  path: string;
-  element: React.ReactNode;
-  children?: RouteConfig[];
-  meta?: {
-    title?: string;
-    icon?: React.ReactNode;
-    hidden?: boolean;
-    cache?: boolean; // 是否缓存页面
-  };
-}
-
-const routes: RouteConfig[] = [
+const routes: AppRoute[] = [
   {
-    path: '/',
-    element: <Navigate to="/dashboard" />,
+    path: "/",
+    element: <Dashboard />,
     meta: {
-      hidden: true,
+      title: "仪表盘",
+      icon: <DashboardOutlined />,
+      keepAlive: true,
     },
   },
   {
-    path: '/',
-    element: <MainLayout />,
+    path: "/documentation",
+    element: <Documentation />,
+    meta: {
+      title: "文档",
+      icon: <BookOutlined />,
+      keepAlive: true,
+    },
+  },
+  {
+    path: "/components",
+    element: <div>组件</div>,
+    meta: {
+      title: "组件",
+      icon: <AppstoreOutlined />,
+    },
     children: [
       {
-        path: 'dashboard',
-        element: <Dashboard />,
+        path: "/components/form",
+        element: <div>表单</div>,
         meta: {
-          title: 'Dashboard',
-          icon: <DashboardOutlined />,
-          cache: true, // 启用缓存
+          title: "表单",
         },
       },
       {
-        path: 'documentation',
-        element: <Documentation />,
+        path: "/components/table",
+        element: <div>表格</div>,
         meta: {
-          title: 'Documentation',
-          icon: <FileTextOutlined />,
-          cache: true, // 启用缓存
+          title: "表格",
         },
       },
       {
-        path: 'components',
-        element: <div>Components Page</div>,
+        path: "/components/tabs",
+        element: <div>选项卡</div>,
         meta: {
-          title: 'Components',
-          icon: <AppstoreOutlined />,
-        },
-        children: [
-          {
-            path: 'table',
-            element: <div>Table Component</div>,
-            meta: {
-              title: 'Table',
-              icon: <TableOutlined />,
-            },
-          },
-          {
-            path: 'form',
-            element: <div>Form Component</div>,
-            meta: {
-              title: 'Form',
-              icon: <FormOutlined />,
-            },
-          },
-        ],
-      },
-      {
-        path: 'charts',
-        element: <div>Charts Page</div>,
-        meta: {
-          title: 'Charts',
-          icon: <BarChartOutlined />,
+          title: "选项卡",
         },
       },
     ],
   },
   {
-    path: '*',
+    path: "/charts",
+    element: <div>图表</div>,
+    meta: {
+      title: "图表",
+      icon: <AreaChartOutlined />,
+    },
+    children: [
+      {
+        path: "/charts/line",
+        element: <div>折线图</div>,
+        meta: {
+          title: "折线图",
+        },
+      },
+      {
+        path: "/charts/bar",
+        element: <div>柱状图</div>,
+        meta: {
+          title: "柱状图",
+        },
+      },
+      {
+        path: "/charts/pie",
+        element: <div>饼图</div>,
+        meta: {
+          title: "饼图",
+        },
+      },
+    ],
+  },
+  {
+    path: "/permission",
+    element: <div>权限管理</div>,
+    meta: {
+      title: "权限管理",
+      icon: <LockOutlined />,
+    },
+    children: [
+      {
+        path: "/permission/user",
+        element: <UserManagement />,
+        meta: {
+          title: "用户管理",
+          icon: <UserOutlined />,
+          keepAlive: true,
+        },
+      },
+      {
+        path: "/permission/role",
+        element: <RoleManagement />,
+        meta: {
+          title: "角色管理",
+          icon: <TeamOutlined />,
+          keepAlive: true,
+        },
+      },
+      {
+        path: "/permission/auth",
+        element: <AuthManagement />,
+        meta: {
+          title: "授权管理",
+          icon: <FileTextOutlined />,
+          keepAlive: true,
+        },
+      },
+    ],
+  },
+  {
+    path: "*",
     element: <NotFound />,
     meta: {
+      title: "404",
       hidden: true,
     },
   },
