@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useLocation, useOutlet } from 'react-router-dom';
-import { useRoutes } from '../../hooks/useRoutes';
-import { eventBus, EVENT_NAMES } from '../../utils/eventBus';
+import React, { createContext, useEffect, useState } from "react";
+import { getRouteMetaByPath } from "../../router/routes";
+import { useLocation } from "react-router-dom";
+import useCacheStore from "../../store/cacheStore";
 
 // 缓存项接口
 interface CacheItem {
+  key: string;
   component: React.ReactNode;
   active: boolean;
 }
@@ -14,85 +15,86 @@ interface KeepAliveContextType {
   refresh: (path: string) => void;
 }
 
-// 创建上下文
-const KeepAliveContext = createContext<KeepAliveContextType>({
+// 创建缓存上下文
+export const KeepAliveContext = createContext<KeepAliveContextType>({
   refresh: () => {},
 });
 
-// 导出上下文 Hook
-export const useKeepAlive = () => useContext(KeepAliveContext);
+interface KeepAliveProps {
+  children: React.ReactNode;
+}
 
-// 缓存组件
-const KeepAlive: React.FC = () => {
-  // 获取当前路由信息
+const KeepAlive: React.FC<KeepAliveProps> = ({ children }) => {
   const location = useLocation();
-  const outlet = useOutlet();
-  const { getRouteMetaByPath } = useRoutes();
-  
-  // 缓存状态
-  const [cacheMap, setCacheMap] = useState<Record<string, CacheItem>>({});
-  
-  // 当前路径
-  const currentPath = location.pathname;
-  
-  // 获取当前路由元数据
-  const currentMeta = getRouteMetaByPath(currentPath);
-  
-  // 是否需要缓存当前页面
-  const shouldCache = currentMeta?.cache === true;
-  
-  // 刷新缓存方法
+  const [cacheList, setCacheList] = useState<CacheItem[]>([]);
+  const { clearCache } = useCacheStore();
+
+  // 刷新指定路径的缓存
   const refresh = (path: string) => {
-    setCacheMap((prev) => {
-      const newCache = { ...prev };
-      delete newCache[path];
-      
-      // 通过事件总线通知其他组件缓存已清除
-      eventBus.emit(EVENT_NAMES.CACHE_CLEARED, { path });
-      
-      return newCache;
+    console.log(`KeepAlive: 刷新路径 ${path} 的缓存`);
+
+    // 从缓存列表中移除该路径
+    setCacheList((prevList) => {
+      return prevList.filter((item) => item.key !== path);
     });
+
+    // 使用 Zustand store 通知其他组件缓存已清除
+    clearCache(path);
   };
-  
-  // 路由变化时更新缓存
+
   useEffect(() => {
-    if (!outlet) return;
-    
-    setCacheMap((prev) => {
-      const newCache = { ...prev };
-      
-      // 将所有缓存项设为非活动状态
-      Object.keys(newCache).forEach((key) => {
-        newCache[key].active = false;
-      });
-      
-      // 如果当前页面需要缓存，则添加或更新缓存
+    const currentPath = location.pathname;
+    const routeMeta = getRouteMetaByPath(currentPath);
+    const shouldCache = routeMeta?.cache === true;
+
+    console.log(`Path: ${currentPath}, Should cache: ${shouldCache}`);
+
+    // 检查当前路径是否已缓存
+    const existingCache = cacheList.find((item) => item.key === currentPath);
+
+    if (existingCache) {
+      // 如果已缓存，则激活当前路径，停用其他路径
+      setCacheList((prevList) =>
+        prevList.map((item) => ({
+          ...item,
+          active: item.key === currentPath,
+        }))
+      );
+    } else {
+      // 如果未缓存，则添加到缓存列表（如果需要缓存）
+      // 或者替换之前的缓存（如果不需要缓存）
       if (shouldCache) {
-        newCache[currentPath] = {
-          component: outlet,
-          active: true,
-        };
+        setCacheList((prevList) => [
+          ...prevList.map((item) => ({
+            ...item,
+            active: false,
+          })),
+          {
+            key: currentPath,
+            component: children,
+            active: true,
+          },
+        ]);
+      } else {
+        // 如果不需要缓存，则只保留当前组件
+        setCacheList([
+          {
+            key: currentPath,
+            component: children,
+            active: true,
+          },
+        ]);
       }
-      
-      return newCache;
-    });
-  }, [outlet, currentPath, shouldCache]);
-  
+    }
+  }, [children, location.pathname]);
+
   return (
     <KeepAliveContext.Provider value={{ refresh }}>
-      {/* 渲染当前活动的缓存组件 */}
-      {Object.entries(cacheMap).map(([path, { component, active }]) => (
-        <div
-          key={path}
-          style={{ display: active ? 'block' : 'none' }}
-          data-keepalive-path={path}
-        >
-          {component}
+      {cacheList.map((item) => (
+        <div key={item.key} style={{ display: item.active ? "block" : "none" }}>
+          {item.component}
         </div>
       ))}
-      
-      {/* 如果当前页面不需要缓存，直接渲染 */}
-      {!shouldCache && outlet}
     </KeepAliveContext.Provider>
   );
 };
