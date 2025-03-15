@@ -1,4 +1,4 @@
-import { Button, Dropdown, Menu, Space, Tabs, Tooltip } from "antd";
+import { Button, Dropdown, Space, Tabs, Tooltip } from "antd";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -108,30 +108,6 @@ const TagsView: React.FC = () => {
     navigate("/");
   }, [navigate]);
 
-  // 右键菜单
-  const menu = (
-    <Menu
-      items={[
-        {
-          key: "close-current",
-          label: "关闭当前标签",
-          onClick: closeCurrent,
-          disabled: activeKey === "/",
-        },
-        {
-          key: "close-others",
-          label: "关闭其他标签",
-          onClick: closeOthers,
-        },
-        {
-          key: "close-all",
-          label: "关闭所有标签",
-          onClick: closeAll,
-        },
-      ]}
-    />
-  );
-
   return (
     <div
       className="tags-view-container"
@@ -159,7 +135,29 @@ const TagsView: React.FC = () => {
         }))}
         style={{ flex: 1, marginBottom: 0 }}
       />
-      <Dropdown overlay={menu} trigger={["click"]}>
+      <Dropdown
+        menu={{
+          items: [
+            {
+              key: "close-current",
+              label: "关闭当前标签",
+              onClick: closeCurrent,
+              disabled: activeKey === "/",
+            },
+            {
+              key: "close-others",
+              label: "关闭其他标签",
+              onClick: closeOthers,
+            },
+            {
+              key: "close-all",
+              label: "关闭所有标签",
+              onClick: closeAll,
+            },
+          ],
+        }}
+        trigger={["click"]}
+      >
         <Button type="text" size="small">
           <Space>
             操作
