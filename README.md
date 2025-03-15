@@ -126,27 +126,34 @@ npm run preview
 ## 更新日志
 
 ### 2025-03-15
-- 替换销售比例图表，将饼图替换为柱状图，彻底解决 "Unknown Component: shape.outer" 错误
-- 修复 Card 组件的 bordered 属性，替换为 variant="borderless"
-- 修复图表组件配置，解决 "Unknown position: middle" 错误
-- 添加 DashboardStatistics 类型定义，优化类型安全
-- 修复 TypeScript 类型错误，为柱状图配置添加正确的类型定义
+- 添加权限管理模块及嵌套子路由
+- 添加用户管理页面
+- 添加角色管理页面
+- 添加授权管理页面
+- 修复柱状图配置中的 TypeScript 类型错误
+- 恢复完整的更新日志记录
+- 修复饼图标签配置中的 type 属性错误
+- 完全重构饼图配置，解决标签渲染错误
+- 替换饼图为柱状图，解决渲染错误
+- 修复 Card 组件的 bordered 属性和图表配置
+- 添加 DashboardStatistics 类型定义
 
-### 2025-03-14
-- 重构页面缓存实现，使用 Zustand 替代 eventBus
+### 2025-03-15 (Zustand 重构)
+- 添加 Zustand 缓存状态管理 store
+- 使用 Zustand 替代 eventBus 实现 KeepAlive 组件
+- 使用 Zustand 替代 eventBus 实现 Header 组件
+- 使用 Zustand 替代 eventBus 实现 Documentation 组件
+- 标记 eventBus.ts 为已弃用，保留代码作为参考
+- 修复 TagsView 组件中的 Dropdown 警告
+
+### 2025-03-15 (页面缓存功能)
+- 添加事件总线实现组件间通信
+- 添加 KeepAlive 组件实现页面缓存
+- 添加刷新按钮实现页面缓存刷新
 - 优化 Documentation 组件，支持缓存刷新
-- 修复 Dropdown 组件的 overlay 属性废弃问题
-- 添加全局搜索功能，支持快捷键唤起
-- 优化暗色主题下的组件样式
-- 添加国际化支持，支持中英文切换
-
-### 2025-03-13
 - 集成 KeepAlive 组件实现页面缓存
 - 添加路由缓存配置
-- 添加刷新按钮实现页面缓存刷新
-- 优化路由配置，支持动态路由
-- 添加权限控制功能，基于角色的访问控制
-- 集成 TagsView 组件，支持页面快速切换
+- 导出 KeepAlive 组件
 
 ### 2025-03-12
 - 项目初始化，基于 React 18 和 TypeScript
