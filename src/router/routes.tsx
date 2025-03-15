@@ -1,144 +1,105 @@
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 import {
   AppstoreOutlined,
+  BarChartOutlined,
   DashboardOutlined,
   FileTextOutlined,
-  QuestionCircleOutlined,
-  ShoppingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Dashboard, NotFound } from "../pages";
+  FormOutlined,
+  TableOutlined,
+} from '@ant-design/icons';
 
-import { MainLayout } from "../layouts";
-import { Navigate } from "react-router-dom";
-import React from "react";
+import MainLayout from '../layouts/MainLayout';
+import Dashboard from '../pages/dashboard';
+import Documentation from '../pages/documentation';
+import NotFound from '../pages/404';
 
-// 路由配置类型
+// 路由配置接口
 export interface RouteConfig {
   path: string;
   element: React.ReactNode;
   children?: RouteConfig[];
   meta?: {
-    title: string;
+    title?: string;
     icon?: React.ReactNode;
     hidden?: boolean;
     cache?: boolean; // 是否缓存页面
   };
 }
 
-// 路由配置
-export const routes: RouteConfig[] = [
+const routes: RouteConfig[] = [
   {
-    path: "/",
+    path: '/',
+    element: <Navigate to="/dashboard" />,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
+    path: '/',
     element: <MainLayout />,
     children: [
       {
-        path: "",
+        path: 'dashboard',
         element: <Dashboard />,
         meta: {
-          title: "Dashboard",
+          title: 'Dashboard',
           icon: <DashboardOutlined />,
-          cache: true, // 缓存仪表盘页面
+          cache: true, // 启用缓存
         },
       },
       {
-        path: "documentation",
-        element: <div>Documentation Page</div>,
+        path: 'documentation',
+        element: <Documentation />,
         meta: {
-          title: "Documentation",
+          title: 'Documentation',
           icon: <FileTextOutlined />,
-          cache: true, // 缓存文档页面
+          cache: true, // 启用缓存
         },
       },
       {
-        path: "guide",
-        element: <div>Guide Page</div>,
+        path: 'components',
+        element: <div>Components Page</div>,
         meta: {
-          title: "Guide",
-          icon: <QuestionCircleOutlined />,
-          cache: true, // 缓存指南页面
-        },
-      },
-      {
-        path: "permission",
-        element: <div>Permission Page</div>,
-        meta: {
-          title: "Permission",
-          icon: <UserOutlined />,
-          cache: false, // 不缓存权限页面
-        },
-      },
-      {
-        path: "route-permission",
-        element: <div>Route Permission Page</div>,
-        meta: {
-          title: "Route Permission",
-          icon: <UserOutlined />,
-          cache: false, // 不缓存路由权限页面
-        },
-      },
-      {
-        path: "component",
-        element: <div>Component Page</div>,
-        meta: {
-          title: "Component",
+          title: 'Components',
           icon: <AppstoreOutlined />,
-          cache: true, // 缓存组件页面
         },
+        children: [
+          {
+            path: 'table',
+            element: <div>Table Component</div>,
+            meta: {
+              title: 'Table',
+              icon: <TableOutlined />,
+            },
+          },
+          {
+            path: 'form',
+            element: <div>Form Component</div>,
+            meta: {
+              title: 'Form',
+              icon: <FormOutlined />,
+            },
+          },
+        ],
       },
       {
-        path: "business",
-        element: <div>Business Page</div>,
+        path: 'charts',
+        element: <div>Charts Page</div>,
         meta: {
-          title: "Business",
-          icon: <ShoppingOutlined />,
-          cache: true, // 缓存业务页面
-        },
-      },
-      {
-        path: "404",
-        element: <NotFound />,
-        meta: {
-          title: "404",
-          hidden: true,
-          cache: false, // 不缓存404页面
-        },
-      },
-      {
-        path: "*",
-        element: <Navigate to="/404" replace />,
-        meta: {
-          title: "Not Found",
-          hidden: true,
-          cache: false, // 不缓存通配符路由
+          title: 'Charts',
+          icon: <BarChartOutlined />,
         },
       },
     ],
   },
+  {
+    path: '*',
+    element: <NotFound />,
+    meta: {
+      hidden: true,
+    },
+  },
 ];
 
-// 扁平化路由配置，用于快速查找
-export const flattenRoutes = (routes: RouteConfig[]): RouteConfig[] => {
-  return routes.reduce<RouteConfig[]>((acc, route) => {
-    if (route.children) {
-      return [...acc, route, ...flattenRoutes(route.children)];
-    }
-    return [...acc, route];
-  }, []);
-};
-
-// 获取扁平化的路由配置
-export const flatRoutes = flattenRoutes(routes);
-
-// 根据路径获取路由元数据
-export const getRouteMetaByPath = (
-  path: string
-): RouteConfig["meta"] | undefined => {
-  const route = flatRoutes.find((r) => {
-    // 处理根路径
-    if (path === "/" && r.path === "") {
-      return true;
-    }
-    return r.path === path || `/${r.path}` === path;
-  });
-  return route?.meta;
-};
+export default routes;
