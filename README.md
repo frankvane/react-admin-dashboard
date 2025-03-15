@@ -68,15 +68,23 @@ src/
 
 ## 📋 更新日志
 
+### v0.1.2 (2025-03-15)
+
+- **最新** - fix: 修复 TagsView 组件中的 Dropdown 警告
+
+  - 将 Dropdown 组件的 overlay 属性替换为 menu 属性
+  - 删除不再使用的 Menu 导入
+  - 修复 Space 标签的闭合问题
+
 ### v0.1.1 (2025-03-15)
 
-- **最新** - refactor: 使用 Zustand 替代 eventBus 实现页面缓存
+- refactor: 使用 Zustand 替代事件总线实现页面缓存
 
   - 添加 cacheStore.ts 实现缓存状态管理
   - 重构 KeepAlive 组件，使用 Zustand 管理缓存状态
   - 重构 Header 组件，使用 Zustand 通知缓存刷新
   - 重构 Documentation 组件，使用 Zustand 监听缓存变化
-  - 标记 eventBus.ts 为已弃用，保留代码作为参考
+  - 删除不再需要的事件总线实现
 
 ### v0.1.0 (2025-03-15)
 
@@ -85,7 +93,6 @@ src/
   - 添加自定义 KeepAlive 组件实现页面缓存
   - 在路由配置中通过 meta.cache 属性标记需要缓存的页面
   - 添加刷新按钮，支持强制刷新缓存页面
-  - 实现事件总线机制，优化组件间通信
   - 添加 Documentation 页面作为缓存功能演示
 
 - **4c87326** - fix: 修复 TagsView 组件中的关闭功能
