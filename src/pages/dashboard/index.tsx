@@ -112,24 +112,15 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
-  // 饼图配置
+  // 饼图配置 - 完全重构
   const pieConfig = {
-    appendPadding: 10,
     data: salesProportionData,
-    angleField: "value",
-    colorField: "type",
+    angleField: 'value',
+    colorField: 'type',
     radius: 0.8,
     legend: false,
-    label: {
-      type: "spider",  // 修改这里，使用 spider 类型替代 outer
-      content: ({ percent }: { percent: number }) =>
-        `${(percent * 100).toFixed(0)}%`,
-      style: {
-        fontSize: 14,
-        textAlign: "center",
-      },
-    },
-    interactions: [{ type: "element-active" }],
+    // 移除标签配置，使用默认标签
+    interactions: [{ type: 'element-active' }],
   };
 
   // 折线图配置
