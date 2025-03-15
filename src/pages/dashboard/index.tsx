@@ -31,7 +31,9 @@ const { Title, Text } = Typography;
 const Dashboard: React.FC = () => {
   // 状态
   const [loading, setLoading] = useState(true);
-  const [statistics, setStatistics] = useState<DashboardStatistics | null>(null);
+  const [statistics, setStatistics] = useState<DashboardStatistics | null>(
+    null
+  );
   const [salesProportionData, setSalesProportionData] = useState<
     SalesProportionItem[]
   >([]);
@@ -119,8 +121,7 @@ const Dashboard: React.FC = () => {
     radius: 0.8,
     legend: false,
     label: {
-      type: "outer",
-      offset: "-30%",
+      type: "spider",  // 修改这里，使用 spider 类型替代 outer
       content: ({ percent }: { percent: number }) =>
         `${(percent * 100).toFixed(0)}%`,
       style: {
@@ -175,7 +176,6 @@ const Dashboard: React.FC = () => {
     yField: "value",
     color: "#1890ff",
     label: {
-      // 修改 position 属性，避免使用 "middle"
       position: "top",
       style: {
         fill: "#FFFFFF",
@@ -193,7 +193,11 @@ const Dashboard: React.FC = () => {
       <Row gutter={[16, 16]}>
         {/* 总销售额 */}
         <Col xs={24} sm={12} md={6}>
-          <Card variant="borderless" style={{ borderRadius: 4 }} loading={loading}>
+          <Card
+            variant="borderless"
+            style={{ borderRadius: 4 }}
+            loading={loading}
+          >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space align="center">
                 <Text type="secondary">总销售额</Text>
@@ -229,7 +233,11 @@ const Dashboard: React.FC = () => {
 
         {/* 访问量 */}
         <Col xs={24} sm={12} md={6}>
-          <Card variant="borderless" style={{ borderRadius: 4 }} loading={loading}>
+          <Card
+            variant="borderless"
+            style={{ borderRadius: 4 }}
+            loading={loading}
+          >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space align="center">
                 <Text type="secondary">访问量</Text>
@@ -251,7 +259,11 @@ const Dashboard: React.FC = () => {
 
         {/* 支付笔数 */}
         <Col xs={24} sm={12} md={6}>
-          <Card variant="borderless" style={{ borderRadius: 4 }} loading={loading}>
+          <Card
+            variant="borderless"
+            style={{ borderRadius: 4 }}
+            loading={loading}
+          >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space align="center">
                 <Text type="secondary">支付笔数</Text>
@@ -276,7 +288,11 @@ const Dashboard: React.FC = () => {
 
         {/* 运营效果 */}
         <Col xs={24} sm={12} md={6}>
-          <Card variant="borderless" style={{ borderRadius: 4 }} loading={loading}>
+          <Card
+            variant="borderless"
+            style={{ borderRadius: 4 }}
+            loading={loading}
+          >
             <Space direction="vertical" style={{ width: "100%" }}>
               <Space align="center">
                 <Text type="secondary">运营效果</Text>
