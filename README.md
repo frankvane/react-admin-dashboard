@@ -70,8 +70,7 @@ const useCacheStore = create<CacheStore>((set) => ({
 
 3. 图表组件配置更新
    - 柱状图: 将 `position: "middle"` 更改为 `position: "top"`
-   - 饼图: 移除 `label.type` 配置，使用默认标签配置
-     - 注意: Ant Design Charts 5.x 中的饼图标签配置与之前版本不兼容，最简单的解决方案是移除自定义标签配置
+   - 销售比例图表: 将饼图替换为柱状图，避免 Ant Design Charts 5.x 中的饼图标签渲染问题
 
 ## 开发
 
@@ -127,7 +126,7 @@ npm run preview
 ## 更新日志
 
 ### 2025-03-15
-- 修复饼图标签配置，移除 `label.type` 属性，解决 "Unknown Component: shape.outer" 错误
+- 替换销售比例图表，将饼图替换为柱状图，彻底解决 "Unknown Component: shape.outer" 错误
 - 修复 Card 组件的 bordered 属性，替换为 variant="borderless"
 - 修复图表组件配置，解决 "Unknown position: middle" 错误
 - 添加 DashboardStatistics 类型定义，优化类型安全
