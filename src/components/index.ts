@@ -1,3 +1,4 @@
+import KeepAlive from "./KeepAlive";
 import TagsView from "./TagsView";
 
-export { TagsView };
+export { KeepAlive, TagsView };
