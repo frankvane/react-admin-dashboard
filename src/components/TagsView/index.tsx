@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { DownOutlined } from "@ant-design/icons";
 import React from "react";
+import { getRouteMetaByPath } from "../../router";
 
 export interface TagItem {
   key: string;
@@ -33,47 +34,21 @@ const TagsView: React.FC = () => {
     // 检查标签是否已存在
     const isExist = items.some((item) => item.path === pathname);
     if (!isExist) {
-      // 根据路径获取标签名称
-      let label = "";
-      switch (pathname) {
-        case "/":
-          label = "Dashboard";
-          break;
-        case "/documentation":
-          label = "Documentation";
-          break;
-        case "/guide":
-          label = "Guide";
-          break;
-        case "/permission":
-          label = "Permission";
-          break;
-        case "/route-permission":
-          label = "Route Permission";
-          break;
-        case "/component":
-          label = "Component";
-          break;
-        case "/business":
-          label = "Business";
-          break;
-        case "/404":
-          label = "404";
-          break;
-        default:
-          label = pathname.split("/").pop() || "Unknown";
-      }
+      // 根据路径获取路由元数据
+      const meta = getRouteMetaByPath(pathname);
 
-      // 添加新标签
-      setItems((prevItems) => [
-        ...prevItems,
-        {
-          key: pathname,
-          label,
-          path: pathname,
-          closable: pathname !== "/",
-        },
-      ]);
+      // 如果找到元数据并且不是隐藏的路由，则添加标签
+      if (meta && !meta.hidden) {
+        setItems((prevItems) => [
+          ...prevItems,
+          {
+            key: pathname,
+            label: meta.title,
+            path: pathname,
+            closable: pathname !== "/",
+          },
+        ]);
+      }
     }
   }, [location, items]);
 

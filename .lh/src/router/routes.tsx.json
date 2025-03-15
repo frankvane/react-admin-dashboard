@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/router/routes.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1742033713493,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1742033721729,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -97,8 +97,9 @@\n       {\r\n         path: \"*\",\r\n         element: <Navigate to=\"/404\" replace />,\r\n         meta: {\r\n+          title: \"Not Found\",\r\n           hidden: true,\r\n         },\r\n       },\r\n     ],\r\n"
+                }
+            ],
+            "date": 1742033713493,
+            "name": "Commit-0",
+            "content": "import {\r\n  AppstoreOutlined,\r\n  DashboardOutlined,\r\n  FileTextOutlined,\r\n  QuestionCircleOutlined,\r\n  ShoppingOutlined,\r\n  UserOutlined,\r\n} from \"@ant-design/icons\";\r\nimport { Dashboard, NotFound } from \"../pages\";\r\n\r\nimport { MainLayout } from \"../layouts\";\r\nimport { Navigate } from \"react-router-dom\";\r\nimport React from \"react\";\r\n\r\n// 路由配置类型\r\nexport interface RouteConfig {\r\n  path: string;\r\n  element: React.ReactNode;\r\n  children?: RouteConfig[];\r\n  meta?: {\r\n    title: string;\r\n    icon?: React.ReactNode;\r\n    hidden?: boolean;\r\n  };\r\n}\r\n\r\n// 路由配置\r\nexport const routes: RouteConfig[] = [\r\n  {\r\n    path: \"/\",\r\n    element: <MainLayout />,\r\n    children: [\r\n      {\r\n        path: \"\",\r\n        element: <Dashboard />,\r\n        meta: {\r\n          title: \"Dashboard\",\r\n          icon: <DashboardOutlined />,\r\n        },\r\n      },\r\n      {\r\n        path: \"documentation\",\r\n        element: <div>Documentation Page</div>,\r\n        meta: {\r\n          title: \"Documentation\",\r\n          icon: <FileTextOutlined />,\r\n        },\r\n      },\r\n      {\r\n        path: \"guide\",\r\n        element: <div>Guide Page</div>,\r\n        meta: {\r\n          title: \"Guide\",\r\n          icon: <QuestionCircleOutlined />,\r\n        },\r\n      },\r\n      {\r\n        path: \"permission\",\r\n        element: <div>Permission Page</div>,\r\n        meta: {\r\n          title: \"Permission\",\r\n          icon: <UserOutlined />,\r\n        },\r\n      },\r\n      {\r\n        path: \"route-permission\",\r\n        element: <div>Route Permission Page</div>,\r\n        meta: {\r\n          title: \"Route Permission\",\r\n          icon: <UserOutlined />,\r\n        },\r\n      },\r\n      {\r\n        path: \"component\",\r\n        element: <div>Component Page</div>,\r\n        meta: {\r\n          title: \"Component\",\r\n          icon: <AppstoreOutlined />,\r\n        },\r\n      },\r\n      {\r\n        path: \"business\",\r\n        element: <div>Business Page</div>,\r\n        meta: {\r\n          title: \"Business\",\r\n          icon: <ShoppingOutlined />,\r\n        },\r\n      },\r\n      {\r\n        path: \"404\",\r\n        element: <NotFound />,\r\n        meta: {\r\n          title: \"404\",\r\n          hidden: true,\r\n        },\r\n      },\r\n      {\r\n        path: \"*\",\r\n        element: <Navigate to=\"/404\" replace />,\r\n        meta: {\r\n          hidden: true,\r\n        },\r\n      },\r\n    ],\r\n  },\r\n];\r\n\r\n// 扁平化路由配置，用于快速查找\r\nexport const flattenRoutes = (routes: RouteConfig[]): RouteConfig[] => {\r\n  return routes.reduce<RouteConfig[]>((acc, route) => {\r\n    if (route.children) {\r\n      return [...acc, route, ...flattenRoutes(route.children)];\r\n    }\r\n    return [...acc, route];\r\n  }, []);\r\n};\r\n\r\n// 获取扁平化的路由配置\r\nexport const flatRoutes = flattenRoutes(routes);\r\n\r\n// 根据路径获取路由元数据\r\nexport const getRouteMetaByPath = (\r\n  path: string\r\n): RouteConfig[\"meta\"] | undefined => {\r\n  const route = flatRoutes.find((r) => {\r\n    // 处理根路径\r\n    if (path === \"/\" && r.path === \"\") {\r\n      return true;\r\n    }\r\n    return r.path === path || `/${r.path}` === path;\r\n  });\r\n  return route?.meta;\r\n};\r\n"
+        }
+    ]
+}

@@ -1,16 +1,9 @@
-import {
-  AppstoreOutlined,
-  DashboardOutlined,
-  FileTextOutlined,
-  QuestionCircleOutlined,
-  ShoppingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { MenuItem } from "../../types";
 import React from "react";
+import { routes } from "../../router";
 
 const { Sider } = Layout;
 
@@ -22,38 +15,21 @@ const SidebarComponent: React.FC<SidebarProps> = ({ collapsed }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const menuItems: MenuItem[] = [
-    {
-      key: "/",
-      icon: <DashboardOutlined />,
-      label: "Dashboard",
-    },
-    {
-      key: "/documentation",
-      icon: <FileTextOutlined />,
-      label: "Documentation",
-    },
-    {
-      key: "/guide",
-      icon: <QuestionCircleOutlined />,
-      label: "Guide",
-    },
-    {
-      key: "/permission",
-      icon: <UserOutlined />,
-      label: "Permission",
-    },
-    {
-      key: "/component",
-      icon: <AppstoreOutlined />,
-      label: "Component",
-    },
-    {
-      key: "/business",
-      icon: <ShoppingOutlined />,
-      label: "Business",
-    },
-  ];
+  // 从路由配置生成菜单项
+  const generateMenuItems = (): MenuItem[] => {
+    // 获取主布局下的子路由
+    const mainLayoutChildren = routes[0]?.children || [];
+
+    return mainLayoutChildren
+      .filter((route) => !route.meta?.hidden) // 过滤掉隐藏的路由
+      .map((route) => ({
+        key: route.path ? `/${route.path}` : "/",
+        icon: route.meta?.icon,
+        label: route.meta?.title || "",
+      }));
+  };
+
+  const menuItems = generateMenuItems();
 
   const handleMenuClick = (e: { key: string }) => {
     navigate(e.key);
@@ -95,10 +71,12 @@ const SidebarComponent: React.FC<SidebarProps> = ({ collapsed }) => {
             justifyContent: "center",
           }}
         >
-          <AppstoreOutlined
+          <img
+            src="/logo.svg"
+            alt="Logo"
             style={{
-              color: "#1890ff",
-              fontSize: 20,
+              width: collapsed ? 32 : 32,
+              height: 32,
               marginRight: collapsed ? 0 : 8,
             }}
           />

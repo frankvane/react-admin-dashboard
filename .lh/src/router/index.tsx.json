@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/router/index.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1742033735149,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1742033735149,
+            "name": "Commit-0",
+            "content": "import { RouteConfig, routes } from \"./routes\";\r\nimport { RouteObject, useRoutes } from \"react-router-dom\";\r\n\r\nimport React from \"react\";\r\n\r\n// 将自定义路由配置转换为 React Router 的 RouteObject\r\nexport const convertToRouteObjects = (routes: RouteConfig[]): RouteObject[] => {\r\n  return routes.map((route) => {\r\n    const routeObject: RouteObject = {\r\n      path: route.path,\r\n      element: route.element,\r\n    };\r\n\r\n    if (route.children) {\r\n      routeObject.children = convertToRouteObjects(route.children);\r\n    }\r\n\r\n    return routeObject;\r\n  });\r\n};\r\n\r\n// 路由组件\r\nexport const AppRoutes: React.FC = () => {\r\n  const routeObjects = convertToRouteObjects(routes);\r\n  const element = useRoutes(routeObjects);\r\n  return element;\r\n};\r\n\r\n// 导出路由相关内容\r\nexport * from \"./routes\";\r\n"
+        }
+    ]
+}

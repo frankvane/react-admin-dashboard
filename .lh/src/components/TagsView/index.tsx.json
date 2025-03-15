@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 4,
+            "activePatchIndex": 5,
             "patches": [
                 {
                     "date": 1742032883390,
@@ -24,6 +24,10 @@
                 {
                     "date": 1742032966348,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,8 @@\n import { useLocation, useNavigate } from \"react-router-dom\";\r\n \r\n import { DownOutlined } from \"@ant-design/icons\";\r\n import React from \"react\";\r\n-import type { TabsProps } from \"antd\";\r\n \r\n export interface TagItem {\r\n   key: string;\r\n   label: string;\r\n@@ -148,22 +147,8 @@\n       ]}\r\n     />\r\n   );\r\n \r\n-  // 自定义标签\r\n-  const renderTabBar = (\r\n-    props: unknown,\r\n-    DefaultTabBar: React.ComponentType<unknown>\r\n-  ) => (\r\n-    <DefaultTabBar {...props}>\r\n-      {(node: React.ReactNode) => (\r\n-        <div className=\"ant-tabs-tab\" style={{ marginRight: 0 }}>\r\n-          {node}\r\n-        </div>\r\n-      )}\r\n-    </DefaultTabBar>\r\n-  );\r\n-\r\n   return (\r\n     <div\r\n       className=\"tags-view-container\"\r\n       style={{\r\n@@ -178,9 +163,8 @@\n         type=\"editable-card\"\r\n         onChange={onChange}\r\n         activeKey={activeKey}\r\n         onEdit={onEdit}\r\n-        renderTabBar={renderTabBar}\r\n         items={items.map((item) => ({\r\n           key: item.path,\r\n           label: (\r\n             <Tooltip title={item.label}>\r\n"
+                },
+                {
+                    "date": 1742033772341,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,9 @@\n import { useLocation, useNavigate } from \"react-router-dom\";\r\n \r\n import { DownOutlined } from \"@ant-design/icons\";\r\n import React from \"react\";\r\n+import { getRouteMetaByPath } from \"../../router\";\r\n \r\n export interface TagItem {\r\n   key: string;\r\n   label: string;\r\n@@ -32,49 +33,23 @@\n \r\n     // 检查标签是否已存在\r\n     const isExist = items.some((item) => item.path === pathname);\r\n     if (!isExist) {\r\n-      // 根据路径获取标签名称\r\n-      let label = \"\";\r\n-      switch (pathname) {\r\n-        case \"/\":\r\n-          label = \"Dashboard\";\r\n-          break;\r\n-        case \"/documentation\":\r\n-          label = \"Documentation\";\r\n-          break;\r\n-        case \"/guide\":\r\n-          label = \"Guide\";\r\n-          break;\r\n-        case \"/permission\":\r\n-          label = \"Permission\";\r\n-          break;\r\n-        case \"/route-permission\":\r\n-          label = \"Route Permission\";\r\n-          break;\r\n-        case \"/component\":\r\n-          label = \"Component\";\r\n-          break;\r\n-        case \"/business\":\r\n-          label = \"Business\";\r\n-          break;\r\n-        case \"/404\":\r\n-          label = \"404\";\r\n-          break;\r\n-        default:\r\n-          label = pathname.split(\"/\").pop() || \"Unknown\";\r\n+      // 根据路径获取路由元数据\r\n+      const meta = getRouteMetaByPath(pathname);\r\n+\r\n+      // 如果找到元数据并且不是隐藏的路由，则添加标签\r\n+      if (meta && !meta.hidden) {\r\n+        setItems((prevItems) => [\r\n+          ...prevItems,\r\n+          {\r\n+            key: pathname,\r\n+            label: meta.title,\r\n+            path: pathname,\r\n+            closable: pathname !== \"/\",\r\n+          },\r\n+        ]);\r\n       }\r\n-\r\n-      // 添加新标签\r\n-      setItems((prevItems) => [\r\n-        ...prevItems,\r\n-        {\r\n-          key: pathname,\r\n-          label,\r\n-          path: pathname,\r\n-          closable: pathname !== \"/\",\r\n-        },\r\n-      ]);\r\n     }\r\n   }, [location, items]);\r\n \r\n   // 切换标签\r\n"
                 }
             ],
             "date": 1742032883390,
