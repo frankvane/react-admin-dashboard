@@ -18,6 +18,7 @@
 - 🔐 **权限控制**：灵活的权限管理系统，控制用户访问权限
 - 🌐 **API 集成**：内置 Axios 请求工具，轻松对接后端服务
 - 🗄️ **状态管理**：使用 Zustand 进行全局状态管理
+- 🔄 **页面缓存**：自定义 KeepAlive 组件实现页面缓存，提高性能和用户体验
 
 ## 📦 安装
 
@@ -45,6 +46,8 @@ npm run dev
 src/
 ├── assets/        # 静态资源文件
 ├── components/    # 公共组件
+│   ├── KeepAlive/ # 页面缓存组件
+│   └── TagsView/  # 标签导航组件
 ├── hooks/         # 自定义 Hooks
 ├── layouts/       # 布局组件
 ├── pages/         # 页面组件
@@ -54,6 +57,7 @@ src/
 ├── styles/        # 全局样式
 ├── types/         # TypeScript 类型定义
 ├── utils/         # 工具函数
+│   └── eventBus.ts # 事件总线
 ├── App.tsx        # 应用入口组件
 └── main.tsx       # 应用入口文件
 ```
@@ -66,30 +70,43 @@ src/
 
 ### v0.1.0 (2025-03-15)
 
+- **最新** - feat: 实现页面缓存功能
+
+  - 添加自定义 KeepAlive 组件实现页面缓存
+  - 在路由配置中通过 meta.cache 属性标记需要缓存的页面
+  - 添加刷新按钮，支持强制刷新缓存页面
+  - 实现事件总线机制，优化组件间通信
+  - 添加 Documentation 页面作为缓存功能演示
+
 - **4c87326** - fix: 修复 TagsView 组件中的关闭功能
+
   - 使用 useRef 解决依赖循环问题
   - 修复标签操作逻辑
   - 优化回调函数依赖
   - 本地化菜单文本
 
 - **e622b4f** - refactor: 抽离路由配置到 router 目录并优化 TagsView 组件
+
   - 将路由配置从 App.tsx 抽离到专门的 router 目录
   - 实现路由配置集中管理
   - 优化 TagsView 组件，使用路由元数据动态生成标签
   - 优化 Sidebar 组件，使用路由配置生成菜单项
 
 - **760979e** - feat: 添加 TagsView 组件实现标签式导航
+
   - 实现标签式导航功能
   - 支持关闭当前、关闭其它、关闭所有等操作
   - 添加 404 页面组件
 
 - **0d4c8ca** - feat: 完成 React Admin Dashboard 基础框架搭建
+
   - 创建主布局组件
   - 实现侧边栏、头部和页脚组件
   - 添加仪表盘页面
   - 配置基本路由
 
 - **e3e347e** - Add admin dashboard with Ant Design, React Router, Zustand, and Axios
+
   - 集成 Ant Design 组件库
   - 添加 React Router 路由管理
   - 集成 Zustand 状态管理
@@ -99,6 +116,47 @@ src/
   - 使用 Vite 创建 React 项目
   - 配置 TypeScript 支持
   - 设置基本项目结构
+
+## 🔄 页面缓存功能说明
+
+本项目实现了类似 Vue 中 `<keep-alive>` 的页面缓存功能，可以在用户切换页面时保留页面状态，提高用户体验和应用性能。
+
+### 使用方法
+
+1. **配置需要缓存的路由**
+
+   在 `src/router/routes.tsx` 中，通过设置路由的 `meta.cache` 属性来标记需要缓存的页面：
+
+   ```tsx
+   {
+     path: "documentation",
+     element: <Documentation />,
+     meta: {
+       title: "Documentation",
+       icon: <FileTextOutlined />,
+       cache: true, // 启用缓存
+     },
+   }
+   ```
+
+2. **刷新缓存**
+
+   可以通过顶部导航栏的刷新按钮强制刷新当前页面的缓存。
+
+### 实现原理
+
+- **KeepAlive 组件**：自定义组件，维护一个缓存列表，保存已访问过的页面组件。
+- **路由元数据**：通过路由配置的 `meta.cache` 属性决定页面是否需要缓存。
+- **事件总线**：使用自定义事件总线实现组件间通信，特别是在缓存被清除时通知相关组件。
+- **全局状态**：使用模块级变量保持状态，确保即使组件重新挂载也能保持之前的状态。
+
+### 演示页面
+
+项目中的 Documentation 页面提供了缓存功能的完整演示，包括：
+
+- 显示组件挂载时间和 API 请求次数，证明缓存效果
+- 提供手动刷新数据的按钮，不影响缓存
+- 在 Network 面板中可观察到，离开页面再返回时不会重新发起 API 请求
 
 ## 📄 许可证
 
