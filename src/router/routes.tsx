@@ -21,6 +21,7 @@ export interface RouteConfig {
     title: string;
     icon?: React.ReactNode;
     hidden?: boolean;
+    cache?: boolean; // 是否缓存页面
   };
 }
 
@@ -36,6 +37,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Dashboard",
           icon: <DashboardOutlined />,
+          cache: true, // 缓存仪表盘页面
         },
       },
       {
@@ -44,6 +46,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Documentation",
           icon: <FileTextOutlined />,
+          cache: true, // 缓存文档页面
         },
       },
       {
@@ -52,6 +55,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Guide",
           icon: <QuestionCircleOutlined />,
+          cache: true, // 缓存指南页面
         },
       },
       {
@@ -60,6 +64,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Permission",
           icon: <UserOutlined />,
+          cache: false, // 不缓存权限页面
         },
       },
       {
@@ -68,6 +73,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Route Permission",
           icon: <UserOutlined />,
+          cache: false, // 不缓存路由权限页面
         },
       },
       {
@@ -76,6 +82,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Component",
           icon: <AppstoreOutlined />,
+          cache: true, // 缓存组件页面
         },
       },
       {
@@ -84,6 +91,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Business",
           icon: <ShoppingOutlined />,
+          cache: true, // 缓存业务页面
         },
       },
       {
@@ -92,6 +100,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "404",
           hidden: true,
+          cache: false, // 不缓存404页面
         },
       },
       {
@@ -100,6 +109,7 @@ export const routes: RouteConfig[] = [
         meta: {
           title: "Not Found",
           hidden: true,
+          cache: false, // 不缓存通配符路由
         },
       },
     ],
