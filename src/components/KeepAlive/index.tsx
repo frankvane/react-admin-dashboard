@@ -1,89 +1,98 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation, useOutlet } from 'react-router-dom';
-import { getRouteMetaByPath } from '../../router';
+import { useRoutes } from '../../hooks/useRoutes';
+import { eventBus, EVENT_NAMES } from '../../utils/eventBus';
 
+// 缓存项接口
 interface CacheItem {
-  key: string;
   component: React.ReactNode;
   active: boolean;
 }
 
+// 缓存上下文接口
 interface KeepAliveContextType {
-  refresh: (path?: string) => void;
+  refresh: (path: string) => void;
 }
 
-export const KeepAliveContext = React.createContext<KeepAliveContextType>({
+// 创建上下文
+const KeepAliveContext = createContext<KeepAliveContextType>({
   refresh: () => {},
 });
 
+// 导出上下文 Hook
+export const useKeepAlive = () => useContext(KeepAliveContext);
+
+// 缓存组件
 const KeepAlive: React.FC = () => {
-  const outlet = useOutlet();
+  // 获取当前路由信息
   const location = useLocation();
-  const [cacheItems, setCacheItems] = useState<CacheItem[]>([]);
-  const cacheItemsRef = useRef<CacheItem[]>([]);
-
-  // 刷新指定路径的缓存
-  const refresh = (path?: string) => {
-    const targetPath = path || location.pathname;
-    
-    // 从缓存中移除指定路径的组件
-    const newCacheItems = cacheItemsRef.current.filter(item => item.key !== targetPath);
-    cacheItemsRef.current = newCacheItems;
-    setCacheItems(newCacheItems);
+  const outlet = useOutlet();
+  const { getRouteMetaByPath } = useRoutes();
+  
+  // 缓存状态
+  const [cacheMap, setCacheMap] = useState<Record<string, CacheItem>>({});
+  
+  // 当前路径
+  const currentPath = location.pathname;
+  
+  // 获取当前路由元数据
+  const currentMeta = getRouteMetaByPath(currentPath);
+  
+  // 是否需要缓存当前页面
+  const shouldCache = currentMeta?.cache === true;
+  
+  // 刷新缓存方法
+  const refresh = (path: string) => {
+    setCacheMap((prev) => {
+      const newCache = { ...prev };
+      delete newCache[path];
+      
+      // 通过事件总线通知其他组件缓存已清除
+      eventBus.emit(EVENT_NAMES.CACHE_CLEARED, { path });
+      
+      return newCache;
+    });
   };
-
+  
+  // 路由变化时更新缓存
   useEffect(() => {
-    const { pathname } = location;
-    const meta = getRouteMetaByPath(pathname);
+    if (!outlet) return;
     
-    // 检查路由是否需要缓存
-    const shouldCache = meta?.cache === true;
-    
-    // 检查缓存中是否已存在该路径
-    const existingItemIndex = cacheItemsRef.current.findIndex(item => item.key === pathname);
-    
-    // 更新所有缓存项的活动状态
-    const updatedCacheItems = cacheItemsRef.current.map(item => ({
-      ...item,
-      active: item.key === pathname,
-    }));
-    
-    // 如果路径不在缓存中且需要缓存，则添加到缓存
-    if (existingItemIndex === -1 && shouldCache) {
-      updatedCacheItems.push({
-        key: pathname,
-        component: outlet,
-        active: true,
+    setCacheMap((prev) => {
+      const newCache = { ...prev };
+      
+      // 将所有缓存项设为非活动状态
+      Object.keys(newCache).forEach((key) => {
+        newCache[key].active = false;
       });
-    } 
-    // 如果路径在缓存中，更新组件
-    else if (existingItemIndex !== -1) {
+      
+      // 如果当前页面需要缓存，则添加或更新缓存
       if (shouldCache) {
-        updatedCacheItems[existingItemIndex] = {
-          ...updatedCacheItems[existingItemIndex],
+        newCache[currentPath] = {
+          component: outlet,
           active: true,
         };
-      } else {
-        // 如果不需要缓存，从缓存中移除
-        updatedCacheItems.splice(existingItemIndex, 1);
       }
-    }
-    
-    cacheItemsRef.current = updatedCacheItems;
-    setCacheItems(updatedCacheItems);
-  }, [location, outlet]);
-
+      
+      return newCache;
+    });
+  }, [outlet, currentPath, shouldCache]);
+  
   return (
     <KeepAliveContext.Provider value={{ refresh }}>
-      {/* 渲染所有缓存的组件，但只显示当前活动的组件 */}
-      {cacheItems.map(item => (
-        <div key={item.key} style={{ display: item.active ? 'block' : 'none' }}>
-          {item.component}
+      {/* 渲染当前活动的缓存组件 */}
+      {Object.entries(cacheMap).map(([path, { component, active }]) => (
+        <div
+          key={path}
+          style={{ display: active ? 'block' : 'none' }}
+          data-keepalive-path={path}
+        >
+          {component}
         </div>
       ))}
       
-      {/* 如果当前路径没有缓存，则直接渲染 outlet */}
-      {cacheItems.length === 0 && outlet}
+      {/* 如果当前页面不需要缓存，直接渲染 */}
+      {!shouldCache && outlet}
     </KeepAliveContext.Provider>
   );
 };
