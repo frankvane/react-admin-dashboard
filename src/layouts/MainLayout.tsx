@@ -5,7 +5,7 @@ import HeaderComponent from "./components/Header";
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import SidebarComponent from "./components/Sidebar";
-import { TagsView } from "../components";
+import { KeepAlive, TagsView } from "../components";
 
 const { Content } = Layout;
 
@@ -33,7 +33,10 @@ const MainLayout: React.FC = () => {
             position: "relative",
           }}
         >
-          <Outlet />
+          {/* 使用 KeepAlive 组件包裹 Outlet，实现页面缓存 */}
+          <KeepAlive>
+            <Outlet />
+          </KeepAlive>
         </Content>
         <FooterComponent />
       </Layout>
