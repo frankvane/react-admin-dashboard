@@ -112,25 +112,36 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
+  // 定义颜色映射类型
+  type ColorMap = {
+    appliances: string;
+    drinks: string;
+    health: string;
+    clothing: string;
+    baby: string;
+    default: string;
+    [key: string]: string;
+  };
+
   // 销售比例柱状图配置 (替代饼图)
   const salesColumnConfig = {
     data: salesProportionData,
-    xField: 'type',
-    yField: 'value',
-    color: ({ type }) => {
-      const colorMap = {
-        appliances: '#1890ff',
-        drinks: '#52c41a',
-        health: '#faad14',
-        clothing: '#f5222d',
-        baby: '#eb2f96',
-        default: '#722ed1'
+    xField: "type",
+    yField: "value",
+    color: ({ type }: { type: string }) => {
+      const colorMap: ColorMap = {
+        appliances: "#1890ff",
+        drinks: "#52c41a",
+        health: "#faad14",
+        clothing: "#f5222d",
+        baby: "#eb2f96",
+        default: "#722ed1",
       };
       return colorMap[type] || colorMap.default;
     },
     label: {
-      position: 'top',
-      content: (data) => `${data.value}`,
+      position: "top",
+      content: (data: { value: number }) => `${data.value}`,
     },
     xAxis: {
       label: {
@@ -335,7 +346,7 @@ const Dashboard: React.FC = () => {
         </Col>
       </Row>
 
-      {/* 销售比例 - 使用柱状图替代饼图 */}
+      {/* 销售比例 */}
       <Card
         title="销售比例"
         style={{ marginTop: 16, borderRadius: 4 }}
