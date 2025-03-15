@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/services/api.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1742018681102,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1742018681102,
+            "name": "Commit-0",
+            "content": "import { ApiResponse } from \"../types\";\r\n\r\nconst BASE_URL = \"/api\";\r\n\r\n/**\r\n * 通用请求方法\r\n * @param url 请求地址\r\n * @param options 请求选项\r\n * @returns Promise\r\n */\r\nasync function request<T>(\r\n  url: string,\r\n  options?: RequestInit\r\n): Promise<ApiResponse<T>> {\r\n  try {\r\n    const response = await fetch(`${BASE_URL}${url}`, {\r\n      headers: {\r\n        \"Content-Type\": \"application/json\",\r\n        ...options?.headers,\r\n      },\r\n      ...options,\r\n    });\r\n\r\n    if (!response.ok) {\r\n      throw new Error(`HTTP error! Status: ${response.status}`);\r\n    }\r\n\r\n    const data = await response.json();\r\n    return data;\r\n  } catch (error) {\r\n    console.error(\"API request error:\", error);\r\n    return {\r\n      code: 500,\r\n      data: null as unknown as T,\r\n      message: error instanceof Error ? error.message : \"Unknown error\",\r\n      success: false,\r\n    };\r\n  }\r\n}\r\n\r\n/**\r\n * 用户相关 API\r\n */\r\nexport const userApi = {\r\n  login: (username: string, password: string) =>\r\n    request(\"/user/login\", {\r\n      method: \"POST\",\r\n      body: JSON.stringify({ username, password }),\r\n    }),\r\n\r\n  logout: () => request(\"/user/logout\"),\r\n\r\n  getProfile: () => request(\"/user/profile\"),\r\n\r\n  updateProfile: (data: Record<string, unknown>) =>\r\n    request(\"/user/profile\", {\r\n      method: \"PUT\",\r\n      body: JSON.stringify(data),\r\n    }),\r\n};\r\n\r\n/**\r\n * 仪表盘相关 API\r\n */\r\nexport const dashboardApi = {\r\n  getStatistics: () => request(\"/dashboard/statistics\"),\r\n\r\n  getSalesData: (period: string) =>\r\n    request(`/dashboard/sales?period=${period}`),\r\n\r\n  getVisitData: (period: string) =>\r\n    request(`/dashboard/visits?period=${period}`),\r\n\r\n  getProportionData: () => request(\"/dashboard/proportion\"),\r\n};\r\n\r\n/**\r\n * 模拟 API 响应（开发阶段使用）\r\n */\r\nexport const mockApi = {\r\n  getStatistics: (): Promise<ApiResponse<any>> => {\r\n    return Promise.resolve({\r\n      code: 200,\r\n      data: {\r\n        sales: 126560,\r\n        visits: 8846,\r\n        payments: 6560,\r\n        operations: 8846,\r\n        dailySales: 12423,\r\n        dailyVisits: 1234,\r\n        conversionRate: 60,\r\n      },\r\n      message: \"success\",\r\n      success: true,\r\n    });\r\n  },\r\n\r\n  getSalesProportionData: (): Promise<ApiResponse<any>> => {\r\n    return Promise.resolve({\r\n      code: 200,\r\n      data: [\r\n        { type: \"appliances\", value: 4544, percentage: 30.95 },\r\n        { type: \"drinks\", value: 3321, percentage: 22.62 },\r\n        { type: \"health\", value: 3113, percentage: 21.2 },\r\n        { type: \"clothing\", value: 2341, percentage: 15.94 },\r\n        { type: \"baby\", value: 1231, percentage: 8.38 },\r\n        { type: \"others\", value: 132, percentage: 0.9 },\r\n      ],\r\n      message: \"success\",\r\n      success: true,\r\n    });\r\n  },\r\n};\r\n"
+        }
+    ]
+}

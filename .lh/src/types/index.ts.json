@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/types/index.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1742018607859,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1742018615993,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -40,9 +40,9 @@\n // 图表数据类型\r\n export interface ChartDataItem {\r\n   month: string;\r\n   value?: number;\r\n-  [key: string]: any;\r\n+  [key: string]: string | number | undefined;\r\n }\r\n \r\n // 销售比例数据类型\r\n export interface SalesProportionItem {\r\n"
+                }
+            ],
+            "date": 1742018607859,
+            "name": "Commit-0",
+            "content": "// 用户类型\r\nexport interface User {\r\n  id: string;\r\n  username: string;\r\n  avatar?: string;\r\n  email?: string;\r\n  role: string;\r\n}\r\n\r\n// 菜单项类型\r\nexport interface MenuItem {\r\n  key: string;\r\n  icon?: React.ReactNode;\r\n  label: string;\r\n  children?: MenuItem[];\r\n  path?: string;\r\n}\r\n\r\n// 路由类型\r\nexport interface AppRoute {\r\n  path: string;\r\n  element: React.ReactNode;\r\n  children?: AppRoute[];\r\n}\r\n\r\n// 统计数据类型\r\nexport interface StatisticData {\r\n  title: string;\r\n  value: number;\r\n  icon?: React.ReactNode;\r\n  color?: string;\r\n  footer?: string;\r\n  trend?: {\r\n    value: number;\r\n    isUp: boolean;\r\n    text: string;\r\n  };\r\n}\r\n\r\n// 图表数据类型\r\nexport interface ChartDataItem {\r\n  month: string;\r\n  value?: number;\r\n  [key: string]: any;\r\n}\r\n\r\n// 销售比例数据类型\r\nexport interface SalesProportionItem {\r\n  type: string;\r\n  value: number;\r\n  percentage: number;\r\n}\r\n\r\n// API 响应类型\r\nexport interface ApiResponse<T> {\r\n  code: number;\r\n  data: T;\r\n  message: string;\r\n  success: boolean;\r\n}\r\n"
+        }
+    ]
+}

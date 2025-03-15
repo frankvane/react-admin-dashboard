@@ -1,0 +1,54 @@
+{
+    "sourceFile": "src/layouts/MainLayout.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 9,
+            "patches": [
+                {
+                    "date": 1742017152643,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1742017246939,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,23 +16,26 @@\n \r\n   return (\r\n     <Layout style={{ minHeight: \"100vh\" }}>\r\n       <SidebarComponent collapsed={collapsed} />\r\n-      <Layout>\r\n+      <Layout className=\"site-layout\">\r\n         <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />\r\n         <Content\r\n           style={{\r\n             margin: \"16px\",\r\n             padding: 0,\r\n             overflow: \"auto\",\r\n+            flex: 1,\r\n           }}\r\n         >\r\n           <div\r\n             style={{\r\n               padding: 24,\r\n               minHeight: \"calc(100vh - 64px - 70px - 32px)\", // Viewport height minus header, footer, and margins\r\n               background: colorBgContainer,\r\n               borderRadius: borderRadiusLG,\r\n+              display: \"flex\",\r\n+              flexDirection: \"column\",\r\n             }}\r\n           >\r\n             <Outlet />\r\n           </div>\r\n"
+                },
+                {
+                    "date": 1742017313216,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,26 +16,25 @@\n \r\n   return (\r\n     <Layout style={{ minHeight: \"100vh\" }}>\r\n       <SidebarComponent collapsed={collapsed} />\r\n-      <Layout className=\"site-layout\">\r\n+      <Layout>\r\n         <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />\r\n         <Content\r\n           style={{\r\n             margin: \"16px\",\r\n             padding: 0,\r\n-            overflow: \"auto\",\r\n-            flex: 1,\r\n+            flex: \"1 1 auto\",\r\n+            display: \"flex\",\r\n+            flexDirection: \"column\",\r\n           }}\r\n         >\r\n           <div\r\n             style={{\r\n               padding: 24,\r\n-              minHeight: \"calc(100vh - 64px - 70px - 32px)\", // Viewport height minus header, footer, and margins\r\n+              flex: 1,\r\n               background: colorBgContainer,\r\n               borderRadius: borderRadiusLG,\r\n-              display: \"flex\",\r\n-              flexDirection: \"column\",\r\n             }}\r\n           >\r\n             <Outlet />\r\n           </div>\r\n"
+                },
+                {
+                    "date": 1742017363945,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,9 +16,14 @@\n \r\n   return (\r\n     <Layout style={{ minHeight: \"100vh\" }}>\r\n       <SidebarComponent collapsed={collapsed} />\r\n-      <Layout>\r\n+      <Layout\r\n+        style={{\r\n+          marginLeft: collapsed ? 80 : 200,\r\n+          transition: \"margin-left 0.2s\",\r\n+        }}\r\n+      >\r\n         <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />\r\n         <Content\r\n           style={{\r\n             margin: \"16px\",\r\n"
+                },
+                {
+                    "date": 1742017792325,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,19 +27,18 @@\n         <Content\r\n           style={{\r\n             margin: \"16px\",\r\n             padding: 0,\r\n-            flex: \"1 1 auto\",\r\n-            display: \"flex\",\r\n-            flexDirection: \"column\",\r\n+            flex: 1,\r\n+            overflow: \"auto\",\r\n           }}\r\n         >\r\n           <div\r\n             style={{\r\n               padding: 24,\r\n-              flex: 1,\r\n               background: colorBgContainer,\r\n               borderRadius: borderRadiusLG,\r\n+              minHeight: \"calc(100vh - 64px - 69px - 32px)\", // viewport height - header - footer - margins\r\n             }}\r\n           >\r\n             <Outlet />\r\n           </div>\r\n"
+                },
+                {
+                    "date": 1742018262087,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -39,9 +39,9 @@\n               borderRadius: borderRadiusLG,\r\n               minHeight: \"calc(100vh - 64px - 69px - 32px)\", // viewport height - header - footer - margins\r\n             }}\r\n           >\r\n-            <Outlet />\r\n+            111\r\n           </div>\r\n         </Content>\r\n         <FooterComponent />\r\n       </Layout>\r\n"
+                },
+                {
+                    "date": 1742018278131,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,27 +23,9 @@\n           transition: \"margin-left 0.2s\",\r\n         }}\r\n       >\r\n         <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />\r\n-        <Content\r\n-          style={{\r\n-            margin: \"16px\",\r\n-            padding: 0,\r\n-            flex: 1,\r\n-            overflow: \"auto\",\r\n-          }}\r\n-        >\r\n-          <div\r\n-            style={{\r\n-              padding: 24,\r\n-              background: colorBgContainer,\r\n-              borderRadius: borderRadiusLG,\r\n-              minHeight: \"calc(100vh - 64px - 69px - 32px)\", // viewport height - header - footer - margins\r\n-            }}\r\n-          >\r\n-            111\r\n-          </div>\r\n-        </Content>\r\n+\r\n         <FooterComponent />\r\n       </Layout>\r\n     </Layout>\r\n   );\r\n"
+                },
+                {
+                    "date": 1742018294602,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,10 +22,8 @@\n           marginLeft: collapsed ? 80 : 200,\r\n           transition: \"margin-left 0.2s\",\r\n         }}\r\n       >\r\n-        <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />\r\n-\r\n         <FooterComponent />\r\n       </Layout>\r\n     </Layout>\r\n   );\r\n"
+                },
+                {
+                    "date": 1742018313474,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,14 +16,8 @@\n \r\n   return (\r\n     <Layout style={{ minHeight: \"100vh\" }}>\r\n       <SidebarComponent collapsed={collapsed} />\r\n-      <Layout\r\n-        style={{\r\n-          marginLeft: collapsed ? 80 : 200,\r\n-          transition: \"margin-left 0.2s\",\r\n-        }}\r\n-      ></Layout>\r\n     </Layout>\r\n   );\r\n };\r\n \r\n"
+                },
+                {
+                    "date": 1742018382422,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,29 @@\n \r\n   return (\r\n     <Layout style={{ minHeight: \"100vh\" }}>\r\n       <SidebarComponent collapsed={collapsed} />\r\n+      <Layout\r\n+        style={{\r\n+          marginLeft: collapsed ? 80 : 200,\r\n+          transition: \"margin-left 0.2s\",\r\n+          background: \"#f0f2f5\",\r\n+        }}\r\n+      >\r\n+        <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />\r\n+        <Content\r\n+          style={{\r\n+            margin: \"16px 16px 0\",\r\n+            padding: 0,\r\n+            flex: 1,\r\n+            overflow: \"auto\",\r\n+            position: \"relative\",\r\n+          }}\r\n+        >\r\n+          <Outlet />\r\n+        </Content>\r\n+        <FooterComponent />\r\n+      </Layout>\r\n     </Layout>\r\n   );\r\n };\r\n \r\n"
+                }
+            ],
+            "date": 1742017152643,
+            "name": "Commit-0",
+            "content": "import { Layout, theme } from \"antd\";\r\nimport React, { useState } from \"react\";\r\n\r\nimport FooterComponent from \"./components/Footer\";\r\nimport HeaderComponent from \"./components/Header\";\r\nimport { Outlet } from \"react-router-dom\";\r\nimport SidebarComponent from \"./components/Sidebar\";\r\n\r\nconst { Content } = Layout;\r\n\r\nconst MainLayout: React.FC = () => {\r\n  const [collapsed, setCollapsed] = useState(false);\r\n  const {\r\n    token: { colorBgContainer, borderRadiusLG },\r\n  } = theme.useToken();\r\n\r\n  return (\r\n    <Layout style={{ minHeight: \"100vh\" }}>\r\n      <SidebarComponent collapsed={collapsed} />\r\n      <Layout>\r\n        <HeaderComponent collapsed={collapsed} setCollapsed={setCollapsed} />\r\n        <Content\r\n          style={{\r\n            margin: \"16px\",\r\n            padding: 0,\r\n            overflow: \"auto\",\r\n          }}\r\n        >\r\n          <div\r\n            style={{\r\n              padding: 24,\r\n              minHeight: \"calc(100vh - 64px - 70px - 32px)\", // Viewport height minus header, footer, and margins\r\n              background: colorBgContainer,\r\n              borderRadius: borderRadiusLG,\r\n            }}\r\n          >\r\n            <Outlet />\r\n          </div>\r\n        </Content>\r\n        <FooterComponent />\r\n      </Layout>\r\n    </Layout>\r\n  );\r\n};\r\n\r\nexport default MainLayout;\r\n"
+        }
+    ]
+}

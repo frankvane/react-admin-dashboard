@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/hooks/useLocalStorage.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1742018696442,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1742018696442,
+            "name": "Commit-0",
+            "content": "import { useEffect, useState } from \"react\";\r\n\r\n/**\r\n * 自定义 Hook，用于操作 localStorage\r\n * @param key 存储键名\r\n * @param initialValue 初始值\r\n * @returns [存储的值, 设置值的函数, 移除值的函数]\r\n */\r\nexport function useLocalStorage<T>(\r\n  key: string,\r\n  initialValue: T\r\n): [T, (value: T) => void, () => void] {\r\n  // 获取初始值\r\n  const getStoredValue = (): T => {\r\n    try {\r\n      const item = window.localStorage.getItem(key);\r\n      return item ? JSON.parse(item) : initialValue;\r\n    } catch (error) {\r\n      console.error(\"Error reading from localStorage:\", error);\r\n      return initialValue;\r\n    }\r\n  };\r\n\r\n  // 状态初始化\r\n  const [storedValue, setStoredValue] = useState<T>(getStoredValue);\r\n\r\n  // 更新值的函数\r\n  const setValue = (value: T): void => {\r\n    try {\r\n      // 保存状态\r\n      setStoredValue(value);\r\n      // 保存到 localStorage\r\n      window.localStorage.setItem(key, JSON.stringify(value));\r\n    } catch (error) {\r\n      console.error(\"Error writing to localStorage:\", error);\r\n    }\r\n  };\r\n\r\n  // 移除值的函数\r\n  const removeValue = (): void => {\r\n    try {\r\n      window.localStorage.removeItem(key);\r\n      setStoredValue(initialValue);\r\n    } catch (error) {\r\n      console.error(\"Error removing from localStorage:\", error);\r\n    }\r\n  };\r\n\r\n  // 监听其他标签页的 storage 变化\r\n  useEffect(() => {\r\n    const handleStorageChange = (e: StorageEvent) => {\r\n      if (e.key === key && e.newValue !== null) {\r\n        setStoredValue(JSON.parse(e.newValue));\r\n      } else if (e.key === key && e.newValue === null) {\r\n        setStoredValue(initialValue);\r\n      }\r\n    };\r\n\r\n    window.addEventListener(\"storage\", handleStorageChange);\r\n    return () => {\r\n      window.removeEventListener(\"storage\", handleStorageChange);\r\n    };\r\n  }, [key, initialValue]);\r\n\r\n  return [storedValue, setValue, removeValue];\r\n}\r\n"
+        }
+    ]
+}

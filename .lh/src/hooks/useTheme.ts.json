@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/hooks/useTheme.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1742018711462,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1742018711462,
+            "name": "Commit-0",
+            "content": "import { useEffect, useState } from \"react\";\r\n\r\nimport { useLocalStorage } from \"./useLocalStorage\";\r\n\r\ntype ThemeMode = \"light\" | \"dark\";\r\n\r\n/**\r\n * 自定义 Hook，用于主题切换\r\n * @returns [当前主题模式, 切换主题的函数]\r\n */\r\nexport function useTheme(): [ThemeMode, () => void] {\r\n  // 从 localStorage 中获取主题设置\r\n  const [storedTheme, setStoredTheme] = useLocalStorage<ThemeMode>(\r\n    \"theme\",\r\n    \"light\"\r\n  );\r\n\r\n  // 状态初始化\r\n  const [theme, setTheme] = useState<ThemeMode>(storedTheme);\r\n\r\n  // 切换主题的函数\r\n  const toggleTheme = (): void => {\r\n    const newTheme = theme === \"light\" ? \"dark\" : \"light\";\r\n    setTheme(newTheme);\r\n    setStoredTheme(newTheme);\r\n  };\r\n\r\n  // 应用主题到 DOM\r\n  useEffect(() => {\r\n    document.documentElement.setAttribute(\"data-theme\", theme);\r\n\r\n    // 设置 body 的背景色\r\n    if (theme === \"dark\") {\r\n      document.body.style.backgroundColor = \"#141414\";\r\n      document.body.classList.add(\"dark-theme\");\r\n    } else {\r\n      document.body.style.backgroundColor = \"#f0f2f5\";\r\n      document.body.classList.remove(\"dark-theme\");\r\n    }\r\n  }, [theme]);\r\n\r\n  return [theme, toggleTheme];\r\n}\r\n"
+        }
+    ]
+}
