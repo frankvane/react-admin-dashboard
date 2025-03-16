@@ -1,0 +1,26 @@
+{
+    "sourceFile": "src/pages/acl/permissions/user/index.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1742119428104,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1742119941321,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,10 +1,20 @@\n-import { useEffect } from \"react\";\n+import React, { useEffect } from \"react\";\n \n-const User = () => {\n+// 使用React.memo包装组件，避免不必要的重渲染\n+const User = React.memo(() => {\n   useEffect(() => {\n-    console.log(\"User\");\n-  }, []);\n+    console.log(\"User component mounted\");\n \n-  return <div>User</div>;\n-};\n+    // 返回清理函数\n+    return () => {\n+      console.log(\"User component unmounted\");\n+    };\n+  }, []); // 空依赖数组，只在组件挂载和卸载时执行\n+\n+  return <div>User Management Component</div>;\n+});\n+\n+// 添加displayName，方便调试\n+User.displayName = \"UserManagement\";\n+\n export default User;\n"
+                },
+                {
+                    "date": 1742120364165,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,17 +1,28 @@\n import React, { useEffect } from \"react\";\n \n+import { useEffectOnActive } from \"keepalive-for-react\";\n+\n // 使用React.memo包装组件，避免不必要的重渲染\n const User = React.memo(() => {\n+  // 普通的useEffect，用于记录组件的挂载和卸载\n   useEffect(() => {\n-    console.log(\"User component mounted\");\n+    console.log(\"User component mounted (normal useEffect)\");\n \n-    // 返回清理函数\n     return () => {\n-      console.log(\"User component unmounted\");\n+      console.log(\"User component unmounted (normal useEffect)\");\n     };\n-  }, []); // 空依赖数组，只在组件挂载和卸载时执行\n+  }, []);\n \n+  // 使用keepalive-for-react提供的useEffectOnActive钩子\n+  useEffectOnActive(() => {\n+    console.log(\"User component activated (useEffectOnActive)\");\n+\n+    return () => {\n+      console.log(\"User component deactivated (useEffectOnActive)\");\n+    };\n+  }, []);\n+\n   return <div>User Management Component</div>;\n });\n \n // 添加displayName，方便调试\n"
+                }
+            ],
+            "date": 1742119428104,
+            "name": "Commit-0",
+            "content": "import { useEffect } from \"react\";\n\nconst User = () => {\n\n  useEffect(() => {\n    console.log(\"User\");\n  }, []);\n\n  return <div>User</div>;\n};\nexport default User;\n"
+        }
+    ]
+}

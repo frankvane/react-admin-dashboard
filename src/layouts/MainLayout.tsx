@@ -1,20 +1,72 @@
-import React, { useState } from "react";
+import { Layout, Spin } from "antd";
+import { Outlet, useLocation } from "react-router-dom";
+import React, { Suspense, lazy, useState } from "react";
 
 import FooterComponent from "./components/Footer";
 import HeaderComponent from "./components/Header";
-import KeepAlive from "../components/KeepAlive";
-import { Layout } from "antd";
-import { Outlet } from "react-router-dom";
+import { KeepAlive } from "react-activation";
 import SidebarComponent from "./components/Sidebar";
 import { TagsView } from "../components";
+import { getRouteMetaByPath } from "@/router/routes";
 
 const { Content } = Layout;
 
+// 直接导入 User 组件，而不是通过路由懒加载
+const User = lazy(() => import("@/pages/acl/permissions/user"));
+
 const MainLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
+  };
+
+  // 获取当前路由的元数据
+  const currentRouteMeta = getRouteMetaByPath(location.pathname);
+  // 判断当前路由是否需要缓存
+  const shouldKeepAlive = currentRouteMeta?.keepAlive === true;
+  // 获取当前路径的最后一段作为缓存的key
+  const pathKey = location.pathname.split("/").pop() || "Default";
+
+  console.log(
+    "shouldKeepAlive",
+    shouldKeepAlive,
+    "pathKey",
+    pathKey,
+    "location",
+    location.pathname
+  );
+
+  // 渲染内容
+  const renderContent = () => {
+    // 如果是用户管理页面，直接渲染 User 组件
+    if (location.pathname.includes("/permissions/user")) {
+      if (shouldKeepAlive) {
+        return (
+          <KeepAlive when={true} id="user" cacheKey="user" name="user">
+            <div id="user" key="user">
+              <Suspense fallback={<Spin size="large" />}>
+                <User />
+              </Suspense>
+            </div>
+          </KeepAlive>
+        );
+      } else {
+        return (
+          <Suspense fallback={<Spin size="large" />}>
+            <User />
+          </Suspense>
+        );
+      }
+    }
+
+    // 其他页面正常渲染
+    return (
+      <Suspense fallback={<Spin size="large" />}>
+        <Outlet />
+      </Suspense>
+    );
   };
 
   return (
@@ -45,9 +97,7 @@ const MainLayout: React.FC = () => {
             overflow: "auto",
           }}
         >
-          <KeepAlive>
-            <Outlet />
-          </KeepAlive>
+          {renderContent()}
         </Content>
         <FooterComponent />
       </Layout>

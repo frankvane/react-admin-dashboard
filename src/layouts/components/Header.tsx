@@ -20,14 +20,13 @@ import {
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useContext } from "react";
 
-import { KeepAliveContext } from "../../components/KeepAlive";
 import type { MenuProps } from "antd";
-import { getRouteMetaByPath } from "../../router/routes";
-import useCacheStore from "../../store/cacheStore";
+import React from "react";
+import { getRouteMetaByPath } from "@/router/routes";
+import { useAliveController } from "react-activation";
 import { useLocation } from "react-router-dom";
-import { useTheme } from "../../hooks";
+import { useTheme } from "@/hooks";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -43,25 +42,31 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 }) => {
   const [theme, toggleTheme] = useTheme();
   const location = useLocation();
-  const { refresh } = useContext(KeepAliveContext);
-  const { clearCache } = useCacheStore();
+  const { refresh } = useAliveController();
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleRefresh = () => {
     const currentPath = location.pathname;
     const routeMeta = getRouteMetaByPath(currentPath);
     const isCached = routeMeta?.keepAlive === true;
+    const pathKey = currentPath.split("/").pop() || "Default";
 
-    // 使用 KeepAlive 上下文提供的刷新方法
-    refresh(currentPath);
-
-    // 使用 Zustand store 通知其他组件缓存已清除
-    clearCache(currentPath);
-
-    if (isCached) {
-      messageApi.success("已刷新缓存页面");
-    } else {
-      messageApi.info("页面已刷新");
+    try {
+      // 使用react-activation提供的refresh API刷新缓存
+      if (isCached) {
+        // 对于缓存页面，使用refresh方法刷新缓存
+        console.log("刷新缓存页面:", pathKey);
+        refresh(pathKey);
+        messageApi.success(`已刷新缓存页面: ${pathKey}`);
+      } else {
+        // 如果不是缓存页面，则强制刷新
+        window.location.reload();
+        messageApi.info("页面已刷新");
+      }
+    } catch (error) {
+      console.error("刷新页面时出错:", error);
+      // 出错时回退到强制刷新
+      window.location.reload();
     }
   };
 

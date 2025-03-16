@@ -1,6 +1,4 @@
 import {
-  AppstoreOutlined,
-  AreaChartOutlined,
   BookOutlined,
   DashboardOutlined,
   FileTextOutlined,
@@ -9,24 +7,29 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 
-import { AppRoute } from "../types";
-import Dashboard from "../pages/dashboard";
-import Documentation from "../pages/documentation";
-import { MainLayout } from "../layouts";
-import NotFound from "../pages/404";
+import { AppRoute } from "@/types";
+import Dashboard from "@/pages/dashboard";
+import Documentation from "@/pages/documentation";
+import { MainLayout } from "@/layouts";
+import NotFound from "@/pages/404";
+import { Outlet } from "react-router-dom";
 import React from "react";
 
 // 用户管理页面
-const UserManagement = React.lazy(() => import("../pages/permission/user"));
+const UserManagement = React.lazy(() => import("@/pages/acl/permissions/user"));
 // 角色管理页面
-const RoleManagement = React.lazy(() => import("../pages/permission/role"));
+const RoleManagement = React.lazy(() => import("@/pages/acl/permissions/role"));
 // 授权管理页面
-const AuthManagement = React.lazy(() => import("../pages/permission/auth"));
+const AuthManagement = React.lazy(() => import("@/pages/acl/permissions/auth"));
 
 const routes: AppRoute[] = [
   {
     path: "/",
     element: <MainLayout />,
+    meta: {
+      title: "首页",
+      icon: <DashboardOutlined />,
+    },
     children: [
       {
         path: "",
@@ -38,79 +41,8 @@ const routes: AppRoute[] = [
         },
       },
       {
-        path: "documentation",
-        element: <Documentation />,
-        meta: {
-          title: "文档",
-          icon: <BookOutlined />,
-          keepAlive: true,
-        },
-      },
-      {
-        path: "components",
-        element: <div>组件</div>,
-        meta: {
-          title: "组件",
-          icon: <AppstoreOutlined />,
-        },
-        children: [
-          {
-            path: "form",
-            element: <div>表单</div>,
-            meta: {
-              title: "表单",
-            },
-          },
-          {
-            path: "table",
-            element: <div>表格</div>,
-            meta: {
-              title: "表格",
-            },
-          },
-          {
-            path: "tabs",
-            element: <div>选项卡</div>,
-            meta: {
-              title: "选项卡",
-            },
-          },
-        ],
-      },
-      {
-        path: "charts",
-        element: <div>图表</div>,
-        meta: {
-          title: "图表",
-          icon: <AreaChartOutlined />,
-        },
-        children: [
-          {
-            path: "line",
-            element: <div>折线图</div>,
-            meta: {
-              title: "折线图",
-            },
-          },
-          {
-            path: "bar",
-            element: <div>柱状图</div>,
-            meta: {
-              title: "柱状图",
-            },
-          },
-          {
-            path: "pie",
-            element: <div>饼图</div>,
-            meta: {
-              title: "饼图",
-            },
-          },
-        ],
-      },
-      {
-        path: "permission",
-        element: <div>权限管理</div>,
+        path: "permissions",
+        element: <Outlet />,
         meta: {
           title: "权限管理",
           icon: <LockOutlined />,
@@ -131,7 +63,6 @@ const routes: AppRoute[] = [
             meta: {
               title: "角色管理",
               icon: <TeamOutlined />,
-              keepAlive: true,
             },
           },
           {
@@ -140,10 +71,18 @@ const routes: AppRoute[] = [
             meta: {
               title: "授权管理",
               icon: <FileTextOutlined />,
-              keepAlive: true,
             },
           },
         ],
+      },
+      {
+        path: "documentation",
+        element: <Documentation />,
+        meta: {
+          title: "文档",
+          icon: <BookOutlined />,
+          keepAlive: true,
+        },
       },
       {
         path: "*",

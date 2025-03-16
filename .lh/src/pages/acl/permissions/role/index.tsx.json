@@ -1,0 +1,26 @@
+{
+    "sourceFile": "src/pages/acl/permissions/role/index.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1742123267251,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1742123279518,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,6 @@\n+import React, { useEffect, useState } from \"react\";\n+\n const Role = () => {\n   return <div>Role</div>;\n };\n export default Role;\n"
+                },
+                {
+                    "date": 1742123294104,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,11 @@\n import React, { useEffect, useState } from \"react\";\n \n+import { Button } from \"antd\";\n+\n const Role = () => {\n+  const [count, setCount] = useState(0);\n+  const [renderTime] = useState(new Date().toLocaleTimeString());\n+  \n   return <div>Role</div>;\n };\n export default Role;\n"
+                }
+            ],
+            "date": 1742123267251,
+            "name": "Commit-0",
+            "content": "const Role = () => {\n  return (\n    <div>Role</div>\n  )\n}\nexport default Role"
+        }
+    ]
+}

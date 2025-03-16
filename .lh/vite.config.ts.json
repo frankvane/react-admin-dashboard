@@ -1,0 +1,22 @@
+{
+    "sourceFile": "vite.config.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1742118899326,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1742118983350,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,14 +1,14 @@\n-import { defineConfig } from 'vite'\n-import path from 'path'\n-import react from '@vitejs/plugin-react'\n+import { defineConfig } from \"vite\";\n+import path from \"path\";\n+import react from \"@vitejs/plugin-react\";\n \n // https://vite.dev/config/\n export default defineConfig({\n   plugins: [react()],\n   resolve: {\n     alias: {\n-      '@': path.resolve(__dirname, 'src'),\n+      \"@\": path.resolve(__dirname, \"src\"),\n     },\n-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']\n-  }\n-})\n+    extensions: [\".ts\", \".tsx\", \".js\", \".jsx\", \".json\"],\n+  },\n+});\n"
+                }
+            ],
+            "date": 1742118899326,
+            "name": "Commit-0",
+            "content": "import { defineConfig } from 'vite'\nimport path from 'path'\nimport react from '@vitejs/plugin-react'\n\n// https://vite.dev/config/\nexport default defineConfig({\n  plugins: [react()],\n  resolve: {\n    alias: {\n      '@': path.resolve(__dirname, 'src'),\n    },\n    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']\n  }\n})\n"
+        }
+    ]
+}

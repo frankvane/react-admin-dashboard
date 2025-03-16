@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/store/cacheStore.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1742120168260,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1742120168260,
+            "name": "Commit-0",
+            "content": " "
+        }
+    ]
+}

@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 5,
             "patches": [
                 {
                     "date": 1742019001186,
@@ -16,6 +16,18 @@
                 {
                     "date": 1742019055206,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,10 @@\n import \"./index.css\";\r\n-import \"antd/dist/antd.css\";\r\n+// 在 antd 5.x 中，应该使用以下引入方式\r\n+// 注意：在 antd 5.x 中，不再需要显式引入 CSS 文件\r\n+// 如果需要自定义主题，可以使用 ConfigProvider 组件\r\n \r\n-import App from \"./App.tsx\";\r\n+import App from \"./App\";\r\n import React from \"react\";\r\n import ReactDOM from \"react-dom/client\";\r\n \r\n ReactDOM.createRoot(document.getElementById(\"root\")!).render(\r\n"
+                },
+                {
+                    "date": 1742120407093,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,14 +1,17 @@\n import \"./index.css\";\r\n-// 在 antd 5.x 中，应该使用以下引入方式\r\n-// 注意：在 antd 5.x 中，不再需要显式引入 CSS 文件\r\n-// 如果需要自定义主题，可以使用 ConfigProvider 组件\r\n \r\n import App from \"./App\";\r\n import React from \"react\";\r\n import ReactDOM from \"react-dom/client\";\r\n \r\n+// 在 antd 5.x 中，应该使用以下引入方式\r\n+// 注意：在 antd 5.x 中，不再需要显式引入 CSS 文件\r\n+// 如果需要自定义主题，可以使用 ConfigProvider 组件\r\n+\r\n+\r\n+\r\n+\r\n+\r\n ReactDOM.createRoot(document.getElementById(\"root\")!).render(\r\n-  <React.StrictMode>\r\n-    <App />\r\n-  </React.StrictMode>\r\n+  <App />\r\n );\r\n"
+                },
+                {
+                    "date": 1742120440883,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,11 +7,5 @@\n // 在 antd 5.x 中，应该使用以下引入方式\r\n // 注意：在 antd 5.x 中，不再需要显式引入 CSS 文件\r\n // 如果需要自定义主题，可以使用 ConfigProvider 组件\r\n \r\n-\r\n-\r\n-\r\n-\r\n-ReactDOM.createRoot(document.getElementById(\"root\")!).render(\r\n-  <App />\r\n-);\r\n+ReactDOM.createRoot(document.getElementById(\"root\")!).render(<App />);\r\n"
+                },
+                {
+                    "date": 1742120740599,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,16 @@\n import \"./index.css\";\r\n \r\n+import { AliveScope } from \"react-activation\";\r\n import App from \"./App\";\r\n import React from \"react\";\r\n import ReactDOM from \"react-dom/client\";\r\n \r\n // 在 antd 5.x 中，应该使用以下引入方式\r\n // 注意：在 antd 5.x 中，不再需要显式引入 CSS 文件\r\n // 如果需要自定义主题，可以使用 ConfigProvider 组件\r\n \r\n-ReactDOM.createRoot(document.getElementById(\"root\")!).render(<App />);\r\n+ReactDOM.createRoot(document.getElementById(\"root\")!).render(\r\n+  <AliveScope>\r\n+    <App />\r\n+  </AliveScope>\r\n+);\r\n"
                 }
             ],
             "date": 1742019001186,

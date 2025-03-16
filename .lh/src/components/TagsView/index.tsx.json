@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 17,
+            "activePatchIndex": 19,
             "patches": [
                 {
                     "date": 1742032883390,
@@ -76,6 +76,14 @@
                 {
                     "date": 1742101039392,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -119,8 +119,9 @@\n         borderBottom: \"1px solid #f0f0f0\",\n       }}\n     >\n       <Tabs\n+        type=\"editable-card\"\n         onChange={onChange}\n         activeKey={activeKey}\n         onEdit={onEdit}\n         items={items.map((item) => ({\n@@ -129,8 +130,9 @@\n             <Tooltip title={item.label}>\n               <span>{item.label}</span>\n             </Tooltip>\n           ),\n+          closable: item.closable,\n         }))}\n         style={{ flex: 1, marginBottom: 0 }}\n       />\n       <Dropdown\n"
+                },
+                {
+                    "date": 1742118631330,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,16 +17,9 @@\n   const navigate = useNavigate();\n   const location = useLocation();\n   const [activeKey, setActiveKey] = useState<string>(location.pathname);\n   // 使用 useRef 来存储 items，避免依赖循环\n-  const itemsRef = useRef<TagItem[]>([\n-    {\n-      key: \"/\",\n-      label: \"Dashboard\",\n-      path: \"/\",\n-      closable: false,\n-    },\n-  ]);\n+  const itemsRef = useRef<TagItem[]>([]);\n   const [items, setItems] = useState<TagItem[]>(itemsRef.current);\n \n   // 根据路由变化更新标签\n   useEffect(() => {\n"
+                },
+                {
+                    "date": 1742119333667,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,16 @@\n   const navigate = useNavigate();\n   const location = useLocation();\n   const [activeKey, setActiveKey] = useState<string>(location.pathname);\n   // 使用 useRef 来存储 items，避免依赖循环\n-  const itemsRef = useRef<TagItem[]>([]);\n+  const itemsRef = useRef<TagItem[]>([\n+    {\n+      key: \"/\",\n+      label: \"仪表盘\",\n+      path: \"/\",\n+      closable: false,\n+    },\n+  ]);\n   const [items, setItems] = useState<TagItem[]>(itemsRef.current);\n \n   // 根据路由变化更新标签\n   useEffect(() => {\n"
                 }
             ],
             "date": 1742032883390,

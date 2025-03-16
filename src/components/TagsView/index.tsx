@@ -21,7 +21,7 @@ const TagsView: React.FC = () => {
   const itemsRef = useRef<TagItem[]>([
     {
       key: "/",
-      label: "Dashboard",
+      label: "仪表盘",
       path: "/",
       closable: false,
     },

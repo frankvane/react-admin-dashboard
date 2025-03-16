@@ -1,9 +1,9 @@
 import { Layout, Menu } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
-import type { MenuProps } from "antd";
-import { MenuItem } from "../../types";
-import React, { useEffect, useState } from "react";
-import routes from "../../router/routes";
+
+import { MenuItem } from "@/types";
+import React from "react";
+import { routes } from "@/router";
 
 const { Sider } = Layout;
 
@@ -11,26 +11,27 @@ interface SidebarProps {
   collapsed: boolean;
 }
 
-type MenuItem = {
-  key: string;
-  icon?: React.ReactNode;
-  label: string;
-  children?: MenuItem[];
-};
-
 const SidebarComponent: React.FC<SidebarProps> = ({ collapsed }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([location.pathname]);
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   // 从路由配置生成菜单项
-  const generateMenuItems = (routeList = routes): MenuItem[] => {
+  const generateMenuItems = (
+    routeList = routes,
+    parentPath = ""
+  ): MenuItem[] => {
     return routeList
       .filter((route) => !route.meta?.hidden) // 过滤掉隐藏的路由
       .map((route) => {
+        const fullPath =
+          `${
+            parentPath.endsWith("/") || route.path.startsWith("/")
+              ? parentPath
+              : parentPath + "/"
+          }` + route.path;
+
         const menuItem: MenuItem = {
-          key: route.path,
+          key: fullPath,
           icon: route.meta?.icon,
           label: route.meta?.title || "",
         };
@@ -41,7 +42,7 @@ const SidebarComponent: React.FC<SidebarProps> = ({ collapsed }) => {
             (child) => !child.meta?.hidden
           );
           if (filteredChildren.length > 0) {
-            menuItem.children = generateMenuItems(filteredChildren);
+            menuItem.children = generateMenuItems(filteredChildren, fullPath);
           }
         }
 
@@ -49,59 +50,11 @@ const SidebarComponent: React.FC<SidebarProps> = ({ collapsed }) => {
       });
   };
 
-  const menuItems = generateMenuItems();
+  const menuItems = generateMenuItems(routes[0].children);
 
-  // 处理菜单点击
-  const handleMenuClick: MenuProps["onClick"] = ({ key }) => {
-    navigate(key);
-    setSelectedKeys([key]);
+  const handleMenuClick = (e: { key: string }) => {
+    navigate(e.key);
   };
-
-  // 处理子菜单展开/收起
-  const handleOpenChange = (keys: string[]) => {
-    setOpenKeys(keys);
-  };
-
-  // 根据当前路径设置选中的菜单项和展开的子菜单
-  useEffect(() => {
-    const pathParts = location.pathname.split("/").filter(Boolean);
-    const openKeysSet = new Set<string>();
-    
-    // 构建可能的父路径
-    let currentPath = "";
-    pathParts.forEach((part) => {
-      currentPath += `/${part}`;
-      openKeysSet.add(currentPath);
-    });
-    
-    // 移除当前路径，只保留父路径
-    openKeysSet.delete(location.pathname);
-    
-    setSelectedKeys([location.pathname]);
-    if (!collapsed) {
-      setOpenKeys(Array.from(openKeysSet));
-    }
-  }, [location.pathname, collapsed]);
-
-  // 当折叠状态改变时，处理子菜单的展开状态
-  useEffect(() => {
-    if (collapsed) {
-      setOpenKeys([]);
-    } else {
-      // 恢复之前的展开状态
-      const pathParts = location.pathname.split("/").filter(Boolean);
-      const openKeysSet = new Set<string>();
-      
-      let currentPath = "";
-      pathParts.forEach((part) => {
-        currentPath += `/${part}`;
-        openKeysSet.add(currentPath);
-      });
-      
-      openKeysSet.delete(location.pathname);
-      setOpenKeys(Array.from(openKeysSet));
-    }
-  }, [collapsed, location.pathname]);
 
   return (
     <Sider
@@ -165,9 +118,8 @@ const SidebarComponent: React.FC<SidebarProps> = ({ collapsed }) => {
       <Menu
         theme="light"
         mode="inline"
-        selectedKeys={selectedKeys}
-        openKeys={openKeys}
-        onOpenChange={handleOpenChange}
+        defaultSelectedKeys={["/"]}
+        selectedKeys={[location.pathname]}
         items={menuItems}
         onClick={handleMenuClick}
         style={{
