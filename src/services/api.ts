@@ -1,4 +1,4 @@
-import { ApiResponse } from "../types";
+import { ApiResponse } from "@/types";
 
 const BASE_URL = "/api";
 

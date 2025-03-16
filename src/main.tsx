@@ -1,8 +1,9 @@
 import "./index.css";
+import "antd/dist/reset.css"; // 或者 import 'antd/dist/antd.css';
 
 import { AliveScope } from "react-activation";
 import App from "./App";
-import React from "react";
+import { ConfigProvider } from "antd";
 import ReactDOM from "react-dom/client";
 
 // 在 antd 5.x 中，应该使用以下引入方式
@@ -11,6 +12,8 @@ import ReactDOM from "react-dom/client";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AliveScope>
-    <App />
+    <ConfigProvider>
+      <App />
+    </ConfigProvider>
   </AliveScope>
 );

@@ -21,10 +21,10 @@ import {
   ChartDataItem,
   DashboardStatistics,
   SalesProportionItem,
-} from "../../types";
+} from "@/types";
 import React, { useEffect, useState } from "react";
 
-import { mockApi } from "../../services/api";
+import { mockApi } from "@/services/api";
 
 const { Title, Text } = Typography;
 

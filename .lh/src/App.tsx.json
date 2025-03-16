@@ -1,9 +1,9 @@
 {
-    "sourceFile": "src/App.tsx",
+    "sourceFile": "src/app.tsx",
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 6,
             "patches": [
                 {
                     "date": 1742018886852,
@@ -16,6 +16,22 @@
                 {
                     "date": 1742033745835,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,29 +1,12 @@\n-import { BrowserRouter, Navigate, Route, Routes } from \"react-router-dom\";\r\n-import { Dashboard, NotFound } from \"./pages\";\r\n-\r\n-import { MainLayout } from \"./layouts\";\r\n+import { AppRoutes } from \"./router\";\r\n+import { BrowserRouter } from \"react-router-dom\";\r\n import React from \"react\";\r\n \r\n const App: React.FC = () => {\r\n   return (\r\n     <BrowserRouter>\r\n-      <Routes>\r\n-        <Route path=\"/\" element={<MainLayout />}>\r\n-          <Route index element={<Dashboard />} />\r\n-          <Route path=\"documentation\" element={<div>Documentation Page</div>} />\r\n-          <Route path=\"guide\" element={<div>Guide Page</div>} />\r\n-          <Route path=\"permission\" element={<div>Permission Page</div>} />\r\n-          <Route\r\n-            path=\"route-permission\"\r\n-            element={<div>Route Permission Page</div>}\r\n-          />\r\n-          <Route path=\"component\" element={<div>Component Page</div>} />\r\n-          <Route path=\"business\" element={<div>Business Page</div>} />\r\n-          <Route path=\"404\" element={<NotFound />} />\r\n-          <Route path=\"*\" element={<Navigate to=\"/404\" replace />} />\r\n-        </Route>\r\n-      </Routes>\r\n+      <AppRoutes />\r\n     </BrowserRouter>\r\n   );\r\n };\r\n \r\n"
+                },
+                {
+                    "date": 1742132805586,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,6 @@\n+import \"antd/dist/reset.css\"; // 或者 import 'antd/dist/antd.css';\r\n+\r\n import { AppRoutes } from \"./router\";\r\n import { BrowserRouter } from \"react-router-dom\";\r\n import React from \"react\";\r\n \r\n"
+                },
+                {
+                    "date": 1742132810706,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,4 @@\n-import \"antd/dist/reset.css\"; // 或者 import 'antd/dist/antd.css';\r\n-\r\n import { AppRoutes } from \"./router\";\r\n import { BrowserRouter } from \"react-router-dom\";\r\n import React from \"react\";\r\n \r\n"
+                },
+                {
+                    "date": 1742133137960,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,15 @@\n import { AppRoutes } from \"./router\";\r\n import { BrowserRouter } from \"react-router-dom\";\r\n+import { ConfigProvider } from 'antd';\r\n import React from \"react\";\r\n \r\n const App: React.FC = () => {\r\n   return (\r\n     <BrowserRouter>\r\n+      <ConfigProvider>\r\n       <AppRoutes />\r\n+      </ConfigProvider>\r\n     </BrowserRouter>\r\n   );\r\n };\r\n \r\n"
+                },
+                {
+                    "date": 1742133370735,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,15 +1,12 @@\n import { AppRoutes } from \"./router\";\r\n import { BrowserRouter } from \"react-router-dom\";\r\n-import { ConfigProvider } from \"antd\";\r\n import React from \"react\";\r\n \r\n const App: React.FC = () => {\r\n   return (\r\n     <BrowserRouter>\r\n-      <ConfigProvider>\r\n         <AppRoutes />\r\n-      </ConfigProvider>\r\n     </BrowserRouter>\r\n   );\r\n };\r\n \r\n"
                 }
             ],
             "date": 1742018886852,

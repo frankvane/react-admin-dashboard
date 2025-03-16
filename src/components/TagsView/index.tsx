@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { DownOutlined } from "@ant-design/icons";
 import React from "react";
-import { getRouteMetaByPath } from "../../router";
+import { getRouteMetaByPath } from "@/router";
 
 export interface TagItem {
   key: string;
