@@ -27,6 +27,7 @@ export interface AppRoute {
     icon?: ReactNode;
     hidden?: boolean;
     keepAlive?: boolean;
+    cache?: boolean;
   };
 }
 
@@ -64,7 +65,7 @@ export interface DashboardStatistics {
   operations: number;
 }
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data: T;
   message?: string;

@@ -25,21 +25,21 @@ import React, { useContext } from "react";
 import { KeepAliveContext } from "../../components/KeepAlive";
 import type { MenuProps } from "antd";
 import { getRouteMetaByPath } from "../../router/routes";
+import useCacheStore from "../../store/cacheStore";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "../../hooks";
-import useCacheStore from "../../store/cacheStore";
 
 const { Header } = Layout;
 const { Text } = Typography;
 
 interface HeaderProps {
   collapsed: boolean;
-  setCollapsed: (collapsed: boolean) => void;
+  toggleCollapsed: () => void;
 }
 
 const HeaderComponent: React.FC<HeaderProps> = ({
   collapsed,
-  setCollapsed,
+  toggleCollapsed,
 }) => {
   const [theme, toggleTheme] = useTheme();
   const location = useLocation();
@@ -50,11 +50,11 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   const handleRefresh = () => {
     const currentPath = location.pathname;
     const routeMeta = getRouteMetaByPath(currentPath);
-    const isCached = routeMeta?.cache === true;
+    const isCached = routeMeta?.keepAlive === true;
 
     // 使用 KeepAlive 上下文提供的刷新方法
     refresh(currentPath);
-    
+
     // 使用 Zustand store 通知其他组件缓存已清除
     clearCache(currentPath);
 
@@ -92,13 +92,8 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       style={{
         padding: 0,
         background: "#fff",
-        position: "sticky",
-        top: 0,
-        zIndex: 9,
         width: "100%",
         height: 64,
-        boxShadow: "0 1px 4px rgba(0,21,41,.08)",
-        marginBottom: 16,
       }}
     >
       {contextHolder}
@@ -115,7 +110,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
+            onClick={() => toggleCollapsed()}
             style={{
               fontSize: "16px",
               width: 64,

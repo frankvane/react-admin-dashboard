@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/pages/permission/user/index.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1742097670745,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1742097670745,
+            "name": "Commit-0",
+            "content": "const User = () => {\r\n  return (\r\n    <div>User</div>\r\n  )\r\n}\r\nexport default User"
+        }
+    ]
+}

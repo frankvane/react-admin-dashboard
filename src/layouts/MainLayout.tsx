@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
-import FooterComponent from './components/Footer';
-import HeaderComponent from './components/Header';
-import SidebarComponent from './components/Sidebar';
-import { TagsView } from '../components';
-import KeepAlive from '../components/KeepAlive';
+import React, { useState } from "react";
+
+import FooterComponent from "./components/Footer";
+import HeaderComponent from "./components/Header";
+import KeepAlive from "../components/KeepAlive";
+import { Layout } from "antd";
+import { Outlet } from "react-router-dom";
+import SidebarComponent from "./components/Sidebar";
+import { TagsView } from "../components";
 
 const { Content } = Layout;
 
@@ -17,20 +18,31 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <SidebarComponent collapsed={collapsed} />
-      <Layout>
-        <HeaderComponent
-          collapsed={collapsed}
-          toggleCollapsed={toggleCollapsed}
-        />
-        <TagsView />
+      <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            right: 0,
+            left: collapsed ? 80 : 200,
+            zIndex: 9,
+          }}
+        >
+          <HeaderComponent
+            collapsed={collapsed}
+            toggleCollapsed={toggleCollapsed}
+          />
+          <TagsView />
+        </div>
         <Content
           style={{
-            margin: '24px 16px',
+            margin: "24px 16px",
             padding: 24,
             minHeight: 280,
-            overflow: 'auto',
+            marginTop: 120, // 为固定的header和tagsView留出空间
+            overflow: "auto",
           }}
         >
           <KeepAlive>
